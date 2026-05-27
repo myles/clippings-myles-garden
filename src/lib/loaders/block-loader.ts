@@ -23,7 +23,6 @@ export function blockLoader(config: {
           headers: [["Authorization", `Bearer ${config?.apiKey}`]],
         });
         const result = await response.json();
-        console.log({ block: result.data[0] });
         return {
           entries: result.data.map((block: ArenaBlock) => ({
             id: block.id,
