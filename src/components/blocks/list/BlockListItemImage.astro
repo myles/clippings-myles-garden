@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets";
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+    block: BlockBase<"Image">;
+    class?: string[];
+};
+const { block, class: className } = Astro.props;
+
+block.data.image;
+
+// To make things easier on me, I'm going to figure out the aspect ratio
+// without a number.
+const { aspect_ratio: aspectRatioNum } = block.data.image;
+let aspectRatio: "square" | "landscape" | "portraite" = "square";
+switch (true) {
+    case aspectRatioNum !== null && aspectRatioNum > 1:
+        aspectRatio = "landscape";
+        break;
+    case aspectRatioNum !== null && aspectRatioNum < 1:
+        aspectRatio = "portraite";
+        break;
+    default:
+        aspectRatio = "square";
+        break;
+}
+---
+
+<Fragment>
+    <Image
+        src={block.data.image.square.src}
+        alt={block.data.image.alt_text ?? ""}
+        width={block.data.image.square.width ?? 800}
+        height={block.data.image.square.height ?? 600}
+        class:list={["w-full h-full object-contain"]}
+    />
+</Fragment>

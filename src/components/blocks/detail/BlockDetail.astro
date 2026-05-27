@@ -1,0 +1,96 @@
+---
+import { formatDate, formatISO } from "date-fns";
+import { isImageBlock } from "../../../lib/content";
+import type { Block } from "../../../lib/schemas/block-schema.types";
+import BlockDetailImage from "./BlockDetailImage.astro";
+import BlockDetailMetaDataImage from "./BlockDetailMetaDataImage.astro";
+
+type Props = {
+    block: Block;
+    class?: string[];
+};
+const { block, class: className } = Astro.props;
+
+let blockTitle: string | null = block.data.title;
+let ComponentDetail;
+let ComponentMetaData;
+switch (true) {
+    case isImageBlock(block):
+        blockTitle = blockTitle ? blockTitle : block.data.image.filename;
+        ComponentDetail = BlockDetailImage;
+        ComponentMetaData = BlockDetailMetaDataImage;
+        break;
+    default:
+        ComponentDetail = BlockDetailImage;
+        break;
+}
+---
+
+<article
+    class:list={[
+        "block-detail-image",
+        "grid grid-cols-1 gap-8 flex-1 h-full",
+        "md:grid-cols-3",
+        className,
+    ]}
+>
+    <div class:list={["order-2 space-y-4"]}>
+        <header class:list={["space-y-2"]}>
+            <h2 class:list={["font-bold text-xl leading-snug truncate"]}>
+                {blockTitle}
+            </h2>
+            {
+                block.data.description ? (
+                    <div
+                        class:list={["text-lg"]}
+                        set:html={block.data.description.html}
+                    />
+                ) : (
+                    <p
+                        class:list={[
+                            "text-lg text-slate-200 selection:text-slate-50 selection:bg-slate-950",
+                        ]}
+                    >
+                        No description
+                    </p>
+                )
+            }
+        </header>
+        <section>
+            <dl
+                class:list={[
+                    "space-y-2",
+                    "[&_div]:flex [&_div]:flex-row [&_div]:justify-between",
+                    "[&_dd]:text-right",
+                ]}
+            >
+                <div>
+                    <dt>Added</dt>
+                    <dd>
+                        <time datetime={formatISO(block.data.created_at)}>
+                            {
+                                formatDate(
+                                    block.data.created_at,
+                                    "EEEE do MMMM yyyy",
+                                )
+                            }
+                        </time>
+                    </dd>
+                </div>
+                {
+                    ComponentMetaData && (
+                        <ComponentMetaData block={block as any} />
+                    )
+                }
+            </dl>
+        </section>
+    </div>
+    <section
+        class:list={[
+            "order-1 flex justify-center items-center",
+            "md:col-span-2 md:bg-slate-50 md:p-4",
+        ]}
+    >
+        <ComponentDetail block={block as any} />
+    </section>
+</article>

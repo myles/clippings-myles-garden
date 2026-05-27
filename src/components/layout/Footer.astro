@@ -1,0 +1,22 @@
+---
+export type Props = {
+    class?: string[];
+};
+const { class: className } = Astro.props;
+---
+
+<footer class:list={["ui-footer", "text-center", className]}>
+    <p
+        class:list={[
+            "[&_.heart]:text-red-500 [&_.heart]:text-2xl [&_.heart]:inline-block [&_.heart]:align-middle",
+            "[&_a]:underline [&_a]:decoration-2 [&_a]:decoration-red-500 [&_a]:hover:text-red-600",
+        ]}
+    >
+        made with <span class:list={["heart"]}>&#9829;</span> by <a
+            href="https://myles.garden">myles</a
+        >. built on
+        <a href="https://astro.build">astro</a>, fed by <a
+            href="https://www.are.na">are.na</a
+        >.
+    </p>
+</footer>

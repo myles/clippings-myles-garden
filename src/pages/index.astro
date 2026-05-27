@@ -1,17 +1,30 @@
 ---
+import Header from "../components/layout/Header.astro";
+import Layout from "../layouts/Layout.astro";
+import BlockList from "../components/blocks/list/BlockList.astro";
+import BlockListItem from "../components/blocks/list/BlockListItem.astro";
+import { getLiveEntry } from "astro:content";
+import config from "../config";
+import { getLiveCollection } from "astro:content";
 
+const { entry: channel, error: channelError } = await getLiveEntry(
+    "channels",
+    config.ARENA_CHANNEL_ID,
+);
+const { entries: blocks, error: blocksError } = await getLiveCollection(
+    "blocks",
+    { channelId: config.ARENA_CHANNEL_ID },
+);
+
+if (!channel) throw channelError;
+if (!blocks) throw blocksError;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+    siteTitle={channel.data.title}
+    siteDescription={channel.data.description?.plain}
+>
+    <BlockList>
+        {blocks.map((block) => <BlockListItem block={block} />)}
+    </BlockList>
+</Layout>

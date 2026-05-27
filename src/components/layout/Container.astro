@@ -1,0 +1,18 @@
+---
+type Props = {
+    class?: string[];
+};
+const { class: className } = Astro.props;
+---
+
+<main
+    class:list={[
+        "ui-container",
+        "container mx-auto  gap-8 min-h-svh flex flex-col justify-between items-stretch p-2",
+        "sm:p-4",
+        "md:p-8",
+        className,
+    ]}
+>
+    <slot />
+</main>

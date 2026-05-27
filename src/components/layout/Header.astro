@@ -1,0 +1,26 @@
+---
+export type Props = {
+    siteTitle: string;
+    siteDescription?: string;
+    class?: string[];
+};
+const { siteTitle, siteDescription, class: className } = Astro.props;
+---
+
+<header class:list={["ui-header", className]}>
+    <h1>
+        <a
+            href="/"
+            class:list={[
+                "font-bold text-4xl underline decoration-red-500 decoration-2",
+                "hover:text-red-500 transition duration-150",
+            ]}>{siteTitle}</a
+        >
+    </h1>
+
+    {
+        siteDescription && (
+            <p class:list={["text-2xl font-medium"]}>{siteDescription}</p>
+        )
+    }
+</header>

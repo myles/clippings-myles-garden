@@ -1,0 +1,33 @@
+---
+import type { Block } from "../../../lib/schemas/block-schema.types";
+import { isImageBlock } from "../../../lib/content";
+import BlockListItemImage from "./BlockListItemImage.astro";
+
+type Props = {
+    block: Block;
+    class?: string[];
+};
+const { block, class: className } = Astro.props;
+
+let Component;
+let componentProps = {};
+switch (true) {
+    case isImageBlock(block):
+        Component = BlockListItemImage;
+        break;
+    default:
+        break;
+}
+---
+
+<li class:list={["block-list-item", className]}>
+    <a
+        href={`/${block.id}`}
+        class:list={[
+            "size-full aspect-square flex justify-center items-center bg-slate-50 border border-slate-100 p-4",
+            "hover:bg-slate-100",
+        ]}
+    >
+        {Component && <Component block={block as any} />}
+    </a>
+</li>
