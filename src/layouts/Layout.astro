@@ -7,39 +7,39 @@ import Content from "../components/layout/Content.astro";
 import type { Props as HeaderProps } from "../components/layout/Header.astro";
 
 type Props = HeaderProps & {
-    title?: string;
-    description?: string;
-    class?: string[];
+  title?: string;
+  description?: string;
+  class?: string[];
 };
 const {
-    title,
-    description,
-    siteTitle,
-    siteDescription,
-    class: className,
+  title,
+  description,
+  siteTitle,
+  siteDescription,
+  class: className,
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width,initial-scale=1,viewport-fit=cover"
-        />
-        <meta name="generator" content={Astro.generator} />
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="generator" content={Astro.generator} />
 
-        <title>{title && `${title} | `}{siteTitle}</title>
-        <meta name="description" content={description || siteDescription} />
-    </head>
-    <body id="clippings-myles-garden" class:list={[className]}>
-        <Container>
-            <Header siteTitle={siteTitle} siteDescription={siteDescription} />
-            <Content>
-                <slot />
-            </Content>
-            <Footer />
-        </Container>
-    </body>
+    <title>{title && `${title} | `}{siteTitle}</title>
+    <meta name="description" content={description || siteDescription} />
+  </head>
+  <body id="clippings-myles-garden" class:list={[className]}>
+    <Container>
+      <Header siteTitle={siteTitle} siteDescription={siteDescription} />
+      <Content>
+        <slot />
+      </Content>
+      <Footer />
+    </Container>
+  </body>
 </html>

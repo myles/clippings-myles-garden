@@ -3,8 +3,8 @@ import { Image } from "astro:assets";
 import type { BlockBase } from "../../../lib/schemas/block-schema.types";
 
 type Props = {
-    block: BlockBase<"Image">;
-    class?: string[];
+  block: BlockBase<"Image">;
+  class?: string[];
 };
 const { block, class: className } = Astro.props;
 
@@ -13,34 +13,34 @@ const { block, class: className } = Astro.props;
 const { aspect_ratio: aspectRatioNum } = block.data.image;
 let aspectRatio: "square" | "landscape" | "portraite" = "square";
 switch (true) {
-    case aspectRatioNum !== null && aspectRatioNum > 1:
-        aspectRatio = "landscape";
-        break;
-    case aspectRatioNum !== null && aspectRatioNum < 1:
-        aspectRatio = "portraite";
-        break;
-    default:
-        aspectRatio = "square";
-        break;
+  case aspectRatioNum !== null && aspectRatioNum > 1:
+    aspectRatio = "landscape";
+    break;
+  case aspectRatioNum !== null && aspectRatioNum < 1:
+    aspectRatio = "portraite";
+    break;
+  default:
+    aspectRatio = "square";
+    break;
 }
 ---
 
 <Fragment>
-    <a
-        href={block.data.image.src}
-        target="_blank"
-        class:list={[
-            "block-detail-image",
-            "flex justify-center items-center",
-            className,
-        ]}
-    >
-        <Image
-            src={block.data.image.large.src}
-            alt={block.data.image.alt_text ?? ""}
-            width={block.data.image.large.width ?? 800}
-            height={block.data.image.large.height ?? 600}
-            class:list={["block object-contain"]}
-        />
-    </a>
+  <a
+    href={block.data.image.src}
+    target="_blank"
+    class:list={[
+      "block-detail-image",
+      "flex justify-center items-center",
+      className,
+    ]}
+  >
+    <Image
+      src={block.data.image.large.src}
+      alt={block.data.image.alt_text ?? ""}
+      width={block.data.image.large.width ?? 800}
+      height={block.data.image.large.height ?? 600}
+      class:list={["block object-contain"]}
+    />
+  </a>
 </Fragment>

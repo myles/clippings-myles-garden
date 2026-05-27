@@ -1,9 +1,9 @@
-import { channelSchema } from "./lib/schemas/channel-schema";
-import { channelLoader } from "./lib/loaders/channel-loader";
 import { defineLiveCollection } from "astro:content";
 import config from "./config";
 import { blockLoader } from "./lib/loaders/block-loader";
+import { channelLoader } from "./lib/loaders/channel-loader";
 import { blockSchema } from "./lib/schemas/block-schema";
+import { channelSchema } from "./lib/schemas/channel-schema";
 
 const channels = defineLiveCollection({
   loader: channelLoader({ apiKey: config.ARENA_API_KEY }),

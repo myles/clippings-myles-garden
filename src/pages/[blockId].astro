@@ -1,39 +1,36 @@
 ---
-import Header from "../components/layout/Header.astro";
-import Layout from "../layouts/Layout.astro";
+import { getLiveCollection, getLiveEntry } from "astro:content";
 import BlockDetail from "../components/blocks/detail/BlockDetail.astro";
-import { getLiveEntry } from "astro:content";
 import config from "../config";
-import { getLiveCollection } from "astro:content";
-import { undefined } from "astro:schema";
+import Layout from "../layouts/Layout.astro";
 
 export async function getStaticPaths() {
-    const { entries: blocks, error: blocksError } = await getLiveCollection(
-        "blocks",
-        { channelId: config.ARENA_CHANNEL_ID },
-    );
+  const { entries: blocks, error: blocksError } = await getLiveCollection(
+    "blocks",
+    { channelId: config.ARENA_CHANNEL_ID },
+  );
 
-    if (!blocks) throw blocksError;
+  if (!blocks) throw blocksError;
 
-    return blocks.map((block) => ({
-        params: { blockId: block.id.toString() },
-        props: { block },
-    }));
+  return blocks.map((block) => ({
+    params: { blockId: block.id.toString() },
+    props: { block },
+  }));
 }
 const { block } = Astro.props;
 
 const { entry: channel, error: channelError } = await getLiveEntry(
-    "channels",
-    config.ARENA_CHANNEL_ID,
+  "channels",
+  config.ARENA_CHANNEL_ID,
 );
 if (!channel) throw channelError;
 ---
 
 <Layout
-    title={block.data.title || "unknown"}
-    description={block.data.description?.plain}
-    siteTitle={channel.data.title}
-    siteDescription={channel.data.description?.plain}
+  title={block.data.title || "unknown"}
+  description={block.data.description?.plain}
+  siteTitle={channel.data.title}
+  siteDescription={channel.data.description?.plain}
 >
-    <BlockDetail block={block} />
+  <BlockDetail block={block} />
 </Layout>

@@ -1,8 +1,8 @@
 import { z } from "astro/zod";
 import {
+  embeddedConnectionSchema,
   markdownContentSchema,
   timestampSchema,
-  embeddedConnectionSchema,
   userSchema,
 } from "./base-schema";
 import { channelSchema } from "./channel-schema";

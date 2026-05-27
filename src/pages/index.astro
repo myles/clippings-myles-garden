@@ -1,19 +1,17 @@
 ---
-import Header from "../components/layout/Header.astro";
-import Layout from "../layouts/Layout.astro";
+import { getLiveCollection, getLiveEntry } from "astro:content";
 import BlockList from "../components/blocks/list/BlockList.astro";
 import BlockListItem from "../components/blocks/list/BlockListItem.astro";
-import { getLiveEntry } from "astro:content";
 import config from "../config";
-import { getLiveCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
 
 const { entry: channel, error: channelError } = await getLiveEntry(
-    "channels",
-    config.ARENA_CHANNEL_ID,
+  "channels",
+  config.ARENA_CHANNEL_ID,
 );
 const { entries: blocks, error: blocksError } = await getLiveCollection(
-    "blocks",
-    { channelId: config.ARENA_CHANNEL_ID },
+  "blocks",
+  { channelId: config.ARENA_CHANNEL_ID },
 );
 
 if (!channel) throw channelError;
@@ -21,10 +19,10 @@ if (!blocks) throw blocksError;
 ---
 
 <Layout
-    siteTitle={channel.data.title}
-    siteDescription={channel.data.description?.plain}
+  siteTitle={channel.data.title}
+  siteDescription={channel.data.description?.plain}
 >
-    <BlockList>
-        {blocks.map((block) => <BlockListItem block={block} />)}
-    </BlockList>
+  <BlockList>
+    {blocks.map((block) => <BlockListItem block={block} />)}
+  </BlockList>
 </Layout>

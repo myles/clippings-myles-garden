@@ -2,17 +2,17 @@
 import type { BlockBase } from "../../../lib/schemas/block-schema.types";
 
 type Props = {
-    block: BlockBase<"Image">;
+  block: BlockBase<"Image">;
 };
 const { block } = Astro.props;
 ---
 
 <Fragment>
-    <div>
-        <dt>Dimensions</dt>
-        <dd>
-            <span class:list={["tabular-nums"]}>{block.data.image.width}</span> &times;
-            <span class:list={["tabular-nums"]}>{block.data.image.height}</span>
-        </dd>
-    </div>
+  <div>
+    <dt>Dimensions</dt>
+    <dd>
+      <span class:list={["tabular-nums"]}>{block.data.image.width}</span> &times;
+      <span class:list={["tabular-nums"]}>{block.data.image.height}</span>
+    </dd>
+  </div>
 </Fragment>

@@ -1,9 +1,9 @@
 import type {
-  ArenaMarkdowContent,
-  ArenaEmbeddedUser,
-  ArenaMetadata,
-  ArenaEmbeddedGroup,
   ArenaEmbeddedConnection,
+  ArenaEmbeddedGroup,
+  ArenaEmbeddedUser,
+  ArenaMarkdowContent,
+  ArenaMetadata,
 } from "./types";
 
 export type ArenaChannel = {

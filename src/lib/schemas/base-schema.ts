@@ -1,5 +1,5 @@
 import { z } from "astro/zod";
-import { parseISO, formatISO } from "date-fns";
+import { formatISO, parseISO } from "date-fns";
 
 export const timestampSchema = z.codec(z.string(), z.date(), {
   decode: (value) => parseISO(value),
