@@ -63,23 +63,49 @@ switch (true) {
           "space-y-2",
           "[&_div]:flex [&_div]:flex-row [&_div]:justify-between",
           "[&_dd]:text-right",
+          "[&_a]:underline [&_a]:hover:decoration-2",
         ]}
       >
         <div>
           <dt>Added</dt>
           <dd>
             <time datetime={formatISO(block.data.created_at)}>
-              {formatDate(block.data.created_at, "EEEE do MMMM yyyy")}
+              {formatDate(block.data.created_at, "EEE do MMM yyyy")}
             </time>
           </dd>
         </div>
+        <div>
+          <dt>By</dt>
+          <dd>
+            <a
+              href={urls.external.user(block.data.user.slug)}
+              target="_blank"
+              rel="noopener noreferrer">{block.data.user.name}</a
+            >
+          </dd>
+        </div>
+        {
+          block.data.source && (
+            <div>
+              <dt>Source</dt>
+              <dd>
+                <a
+                  href={block.data.source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {block.data.source.title}
+                </a>
+              </dd>
+            </div>
+          )
+        }
         {ComponentMetaData && <ComponentMetaData block={block as any} />}
         <div>
           <dt>External URL</dt>
           <dd>
             View in <a
               href={urls.external.block(block.id)}
-              class:list={["underline", "hover:decoration-2"]}
               target="_blank"
               rel="noopener noreferrer">Are.na</a
             >

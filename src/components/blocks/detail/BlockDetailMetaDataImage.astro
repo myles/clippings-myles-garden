@@ -8,11 +8,16 @@ const { block } = Astro.props;
 ---
 
 <Fragment>
-  <div>
-    <dt>Dimensions</dt>
-    <dd>
-      <span class:list={["tabular-nums"]}>{block.data.image.width}</span> &times;
-      <span class:list={["tabular-nums"]}>{block.data.image.height}</span>
-    </dd>
-  </div>
+  {
+    block.data.image.width && block.data.image.height && (
+      <div>
+        <dt>Dimensions</dt>
+        <dd>
+          <span class:list={["tabular-nums"]}>{block.data.image.width}</span>{" "}
+          &times;
+          <span class:list={["tabular-nums"]}>{block.data.image.height}</span>
+        </dd>
+      </div>
+    )
+  }
 </Fragment>
