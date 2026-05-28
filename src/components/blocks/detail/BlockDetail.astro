@@ -2,6 +2,7 @@
 import { formatDate, formatISO } from "date-fns";
 import { isImageBlock } from "../../../lib/content";
 import type { Block } from "../../../lib/schemas/block-schema.types";
+import urls from "../../../lib/urls";
 import BlockDetailImage from "./BlockDetailImage.astro";
 import BlockDetailMetaDataImage from "./BlockDetailMetaDataImage.astro";
 
@@ -73,6 +74,17 @@ switch (true) {
           </dd>
         </div>
         {ComponentMetaData && <ComponentMetaData block={block as any} />}
+        <div>
+          <dt>External URL</dt>
+          <dd>
+            View in <a
+              href={urls.external.block(block.id)}
+              class:list={["underline", "hover:decoration-2"]}
+              target="_blank"
+              rel="noopener noreferrer">Are.na</a
+            >
+          </dd>
+        </div>
       </dl>
     </section>
   </div>
