@@ -5,6 +5,8 @@ import type { Block } from "../../../lib/schemas/block-schema.types";
 import urls from "../../../lib/urls";
 import BlockDetailImage from "./BlockDetailImage.astro";
 import BlockDetailMetaDataImage from "./BlockDetailMetaDataImage.astro";
+import BlockDetailMetaDataList from "./BlockDetailMetaDataList.astro";
+import BlockDetailMetaDataListItem from "./BlockDetailMetaDataListItem.astro";
 
 type Props = {
   block: Block;
@@ -58,60 +60,41 @@ switch (true) {
       }
     </header>
     <section>
-      <dl
-        class:list={[
-          "space-y-2",
-          "[&_div]:flex [&_div]:flex-row [&_div]:justify-between",
-          "[&_dd]:text-right",
-          "[&_a]:underline [&_a]:hover:decoration-2",
-        ]}
-      >
-        <div>
-          <dt>Added</dt>
-          <dd>
-            <time datetime={formatISO(block.data.created_at)}>
-              {formatDate(block.data.created_at, "EEE do MMM yyyy")}
-            </time>
-          </dd>
-        </div>
-        <div>
-          <dt>By</dt>
-          <dd>
-            <a
-              href={urls.external.user(block.data.user.slug)}
-              target="_blank"
-              rel="noopener noreferrer">{block.data.user.name}</a
-            >
-          </dd>
-        </div>
+      <BlockDetailMetaDataList>
+        <BlockDetailMetaDataListItem name="Added">
+          <time datetime={formatISO(block.data.created_at)}>
+            {formatDate(block.data.created_at, "EEE do MMM yyyy")}
+          </time>
+        </BlockDetailMetaDataListItem>
+        <BlockDetailMetaDataListItem name="By">
+          <a
+            href={urls.external.user(block.data.user.slug)}
+            target="_blank"
+            rel="noopener noreferrer">{block.data.user.name}</a
+          >
+        </BlockDetailMetaDataListItem>
         {
           block.data.source && (
-            <div>
-              <dt>Source</dt>
-              <dd>
-                <a
-                  href={block.data.source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {block.data.source.title}
-                </a>
-              </dd>
-            </div>
+            <BlockDetailMetaDataListItem name="Source">
+              <a
+                href={block.data.source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {block.data.source.title}
+              </a>
+            </BlockDetailMetaDataListItem>
           )
         }
         {ComponentMetaData && <ComponentMetaData block={block as any} />}
-        <div>
-          <dt>External URL</dt>
-          <dd>
-            View in <a
-              href={urls.external.block(block.id)}
-              target="_blank"
-              rel="noopener noreferrer">Are.na</a
-            >
-          </dd>
-        </div>
-      </dl>
+        <BlockDetailMetaDataListItem name="External URL">
+          View in <a
+            href={urls.external.block(block.id)}
+            target="_blank"
+            rel="noopener noreferrer">Are.na</a
+          >
+        </BlockDetailMetaDataListItem>
+      </BlockDetailMetaDataList>
     </section>
   </div>
   <section

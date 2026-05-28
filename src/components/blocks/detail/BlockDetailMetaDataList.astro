@@ -1,0 +1,19 @@
+---
+type Props = {
+  class?: string[];
+};
+const { class: className } = Astro.props;
+---
+
+<dl
+  class:list={[
+    "block-detail-meta-data-list",
+    "space-y-2",
+    "[&_div]:flex [&_div]:flex-row [&_div]:justify-between",
+    "[&_dd]:text-right",
+    "[&_a]:underline [&_a]:hover:decoration-2",
+    className,
+  ]}
+>
+  <slot />
+</dl>

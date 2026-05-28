@@ -1,0 +1,14 @@
+---
+type Props = {
+  name: string;
+  class?: string[];
+};
+const { name, class: className } = Astro.props;
+---
+
+<div class:list={["block-detail-meta-data-list", className]}>
+  <dt>{name}</dt>
+  <dd>
+    <slot />
+  </dd>
+</div>
