@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: checkout
+        name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - id: setup-node
+        name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - id: cache-dependencies
+        name: 📂 Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - id: install-dependencies
+        name: 📦 Install dependencies
+        run: npm ci
+
+      - id: cache-git-lfs
+        name: 📂 Cache Git LFS files
+        uses: actions/cache@v4
+        with:
+          path: .git/lfs/objects
+          key: ${{ runner.os }}-git-lfs-${{ hashFiles('**/.gitattributes') }}
+          restore-keys: |
+            ${{ runner.os }}-git-lfs-
+
+      - id: prettier-check
+        name: 💅 Run Prettier check
+        run: npm run prettier
+
+      - id: astro-check
+        name: ♍️ Run Astro check
+        run: npm run check
+
+      - id: build
+        name: 🏗️ Build website
+        run: npm run build
