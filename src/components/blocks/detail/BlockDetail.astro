@@ -66,15 +66,21 @@ switch (true) {
             {formatDate(block.data.created_at, "EEE do MMM yyyy")}
           </time>
         </BlockDetailMetaDataListItem>
-        <BlockDetailMetaDataListItem name="By">
-          <a
-            href={urls.external.user(block.data.user.slug)}
-            target="_blank"
-            rel="noopener noreferrer">{block.data.user.name}</a
-          >
-        </BlockDetailMetaDataListItem>
         {
-          block.data.source && (
+          "user" in block.data && block.data.user && (
+            <BlockDetailMetaDataListItem name="By">
+              <a
+                href={urls.external.user(block.data.user.slug)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {block.data.user.name}
+              </a>
+            </BlockDetailMetaDataListItem>
+          )
+        }
+        {
+          "source" in block.data && block.data.source && (
             <BlockDetailMetaDataListItem name="Source">
               <a
                 href={block.data.source.url}

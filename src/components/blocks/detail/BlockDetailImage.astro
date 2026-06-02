@@ -7,22 +7,6 @@ type Props = {
   class?: string[];
 };
 const { block, class: className } = Astro.props;
-
-// To make things easier on me, I'm going to figure out the aspect ratio
-// without a number.
-const { aspect_ratio: aspectRatioNum } = block.data.image;
-let aspectRatio: "square" | "landscape" | "portrait" = "square";
-switch (true) {
-  case aspectRatioNum !== null && aspectRatioNum > 1:
-    aspectRatio = "landscape";
-    break;
-  case aspectRatioNum !== null && aspectRatioNum < 1:
-    aspectRatio = "portrait";
-    break;
-  default:
-    aspectRatio = "square";
-    break;
-}
 ---
 
 <Fragment>

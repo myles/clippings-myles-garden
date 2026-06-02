@@ -6,7 +6,7 @@ import config from "./src/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: config.CLIPPINGS_SITE,
+  site: config.SITE_URL,
   vite: {
     plugins: [tailwindcss()],
   },

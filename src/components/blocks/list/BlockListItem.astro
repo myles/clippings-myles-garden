@@ -10,7 +10,6 @@ type Props = {
 const { block, class: className } = Astro.props;
 
 let Component;
-let componentProps = {};
 switch (true) {
   case isImageBlock(block):
     Component = BlockListItemImage;

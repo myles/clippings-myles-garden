@@ -12,7 +12,7 @@ export function channelLoader(config: {
 }): LiveLoader<ArenaChannel, EntryFilter, CollectionFilter> {
   return {
     name: "arena-channel-loader",
-    loadCollection: async ({ filter }) => {
+    loadCollection: async () => {
       console.warn(
         "Loading the entire Arena Channels is not support right now, because I can not figure out how to get a list of all the channels assoitated with a user.",
       );
