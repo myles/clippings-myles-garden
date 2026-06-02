@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends Omit<HTMLAttributes<"a">, "class" | "href"> {
+  href?: string;
+  disabled?: boolean;
+  class?: string | string[];
+}
+const {
+  href,
+  disabled,
+  class: className,
+  title,
+  target,
+} = Astro.props as Props;
+
+const Element = disabled ? "span" : "a";
+---
+
+<Element
+  href={href}
+  title={title}
+  target={target}
+  class:list={[
+    "block rounded border border-black/50 px-2 py-1",
+    href && "hover:bg-black/5",
+    disabled && "cursor-not-allowed opacity-50",
+    className,
+  ]}
+  aria-hidden={disabled ? true : null}
+>
+  <slot />
+</Element>

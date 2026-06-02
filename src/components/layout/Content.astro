@@ -5,6 +5,6 @@ type Props = {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={["ui-content", "flex-1 flex flex-col", className]}>
+<div class:list={["ui-content", "flex-1 flex flex-col space-y-4", className]}>
   <slot />
 </div>

@@ -16,24 +16,41 @@ export function blockLoader(config: {
     name: "arena-block-loader",
     loadCollection: async ({ filter }) => {
       const { channelId } = filter ?? {};
-      const url = `https://api.are.na/v3/channels/${channelId}/contents`;
+      const url = new URL(
+        `/v3/channels/${channelId}/contents`,
+        "https://api.are.na",
+      );
+      url.searchParams.set("per", "100");
 
       try {
-        const response = await fetch(url, {
-          headers: [["Authorization", `Bearer ${config?.apiKey}`]],
-        });
-        const result = await response.json();
+        const results = [];
+
+        let nextPageNum: number | null = 1;
+        while (nextPageNum) {
+          url.searchParams.set(
+            "page",
+            nextPageNum ? nextPageNum.toString() : "",
+          );
+
+          const response = await fetch(url, {
+            headers: [["Authorization", `Bearer ${config?.apiKey}`]],
+          });
+
+          const result = await response.json();
+          results.push(...result.data);
+          nextPageNum = result.meta.next_page;
+        }
+
         return {
-          entries: result.data.map((block: ArenaBlock) => ({
-            id: block.id,
-            data: block,
-            rendered: {
-              html:
-                "content" in block
-                  ? block.content.html
-                  : block.description?.html,
-            },
-          })),
+          entries: results.map((block: ArenaBlock) => {
+            const html =
+              "content" in block ? block.content.html : block.description?.html;
+            return {
+              id: block.id.toString(),
+              data: block,
+              rendered: html ? { html } : undefined,
+            };
+          }),
         };
       } catch (error) {
         return {
@@ -51,7 +68,7 @@ export function blockLoader(config: {
         );
         const data = await response.json();
         return {
-          id: data.id,
+          id: data.id.toString(),
           data: data,
           rendered: {
             html: data.description?.html,

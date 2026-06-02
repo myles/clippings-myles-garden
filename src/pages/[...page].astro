@@ -1,21 +1,29 @@
 ---
+import type { GetStaticPathsOptions } from "astro";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 import BlockList from "../components/blocks/list/BlockList.astro";
 import BlockListItem from "../components/blocks/list/BlockListItem.astro";
+import Pagination from "../components/ui/Pagination.astro";
 import config from "../config";
 import Layout from "../layouts/Layout.astro";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const { entries: blocks, error: blocksError } = await getLiveCollection(
+    "blocks",
+    { channelId: config.ARENA_CHANNEL_ID },
+  );
+  if (!blocks) throw blocksError;
+
+  return paginate(blocks, { pageSize: 12 });
+}
 
 const { entry: channel, error: channelError } = await getLiveEntry(
   "channels",
   config.ARENA_CHANNEL_ID,
 );
-const { entries: blocks, error: blocksError } = await getLiveCollection(
-  "blocks",
-  { channelId: config.ARENA_CHANNEL_ID },
-);
-
 if (!channel) throw channelError;
-if (!blocks) throw blocksError;
+
+const { page } = Astro.props;
 ---
 
 <Layout
@@ -23,6 +31,7 @@ if (!blocks) throw blocksError;
   siteDescription={channel.data.description?.plain}
 >
   <BlockList>
-    {blocks.map((block) => <BlockListItem block={block} />)}
+    {page.data.map((block) => <BlockListItem block={block} />)}
   </BlockList>
+  <Pagination page={page} />
 </Layout>

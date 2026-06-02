@@ -1,0 +1,56 @@
+---
+import type { Page } from "astro";
+import ButtonLink from "./ButtonLink.astro";
+
+interface Props {
+  page: Page;
+  class?: string[];
+}
+
+const { page, class: className } = Astro.props;
+
+const isFirstPage = page.start === 0;
+const isLastPage = page.end + 1 === page.total;
+---
+
+<div
+  class:list={["pagination", "flex items-center justify-between", className]}
+>
+  <div class:list={["sm:flex sm:flex-1 sm:items-center sm:justify-between"]}>
+    <p class:list={["hidden sm:block"]}>
+      Showing
+      <span class:list={["font-medium tabular-nums"]}>
+        {page.start + 1}
+      </span>
+      to
+      <span class:list={["font-medium tabular-nums"]}>
+        {page.end + 1}
+      </span>
+      of
+      <span class:list={["font-medium tabular-nums"]}>{page.total}</span>
+      results.
+    </p>
+    <nav aria-label="Pagination" class:list={["isolate inline-flex space-x-4"]}>
+      <ButtonLink href={page.url.prev} disabled={!page.url.prev}>
+        {
+          isFirstPage ? (
+            <span aria-label="Previous page">&LeftArrowBar;</span>
+          ) : (
+            <span aria-label="Previous page">&LeftArrow;</span>
+          )
+        }
+        Previous
+      </ButtonLink>
+      <ButtonLink href={page.url.next} disabled={!page.url.next}>
+        Next
+        {
+          isLastPage ? (
+            <span aria-label="Next page">&RightArrowBar;</span>
+          ) : (
+            <span aria-label="Next page">&RightArrow;</span>
+          )
+        }
+      </ButtonLink>
+    </nav>
+  </div>
+</div>
