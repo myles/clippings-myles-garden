@@ -1,0 +1,14 @@
+name: Nightly Deploy
+
+on:
+  schedule:
+    - cron: "0 7 * * *" # 07:00 UTC = 2:00 AM Toronto (EST) / 3:00 AM (EDT)
+  workflow_dispatch: # lets me trigger it manually too
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - id: rebuild
+        name: Trigger Vercel rebuild
+        run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}" --fail
