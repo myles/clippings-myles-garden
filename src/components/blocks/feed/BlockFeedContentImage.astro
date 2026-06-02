@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Image">;
+};
+
+const { block } = Astro.props;
+---
+
+<a href={block.data.image.src} target="_blank" rel="noopener noreferrer">
+  <Image
+    src={block.data.image.large.src}
+    alt={block.data.image.alt_text ?? ""}
+    width={block.data.image.large.width ?? 800}
+    height={block.data.image.large.height ?? 600}
+  />
+</a>

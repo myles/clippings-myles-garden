@@ -32,6 +32,19 @@ const {
 
     <title>{title && `${title} | `}{siteTitle}</title>
     <meta name="description" content={description || siteDescription} />
+
+    <link
+      rel="alternate"
+      title={`${siteTitle} JSON Feed`}
+      type="application/json"
+      href={new URL("/feed.json", Astro.site).href}
+    />
+    <link
+      rel="alternate"
+      title={`${siteTitle} RSS Feed`}
+      type="application/rss+xml"
+      href={new URL("/feed.xml", Astro.site).href}
+    />
   </head>
   <body id="clippings-myles-garden" class:list={[className]}>
     <Container>

@@ -1,0 +1,23 @@
+---
+import { isImageBlock } from "../../../lib/content";
+import type { Block } from "../../../lib/schemas/block-schema.types";
+import BlockFeedContentImage from "./BlockFeedContentImage.astro";
+
+type Props = {
+  block: Block;
+};
+
+const { block } = Astro.props;
+
+let ComponentDetail;
+switch (true) {
+  case isImageBlock(block):
+    ComponentDetail = BlockFeedContentImage;
+    break;
+  default:
+    ComponentDetail = BlockFeedContentImage;
+    break;
+}
+---
+
+<ComponentDetail block={block} />
