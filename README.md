@@ -36,7 +36,7 @@ The Are.na API is public and doesn't require authentication for reading from pub
 CLIPPINGS_ARENA_API_KEY="i-am-an-arena-api-key"
 ```
 
-You can generate one at [dev.are.na](https://www.are.na/developers).
+You can generate one at <https://www.are.na/developers/personal-access-tokens>.
 
 ## Deployment
 
