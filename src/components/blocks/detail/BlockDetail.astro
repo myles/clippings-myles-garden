@@ -1,12 +1,26 @@
 ---
 import { formatDate, formatISO } from "date-fns";
-import { isImageBlock } from "../../../lib/content";
+import {
+  isAttachmentBlock,
+  isChannelBlock,
+  isEmbedBlock,
+  isImageBlock,
+  isLinkBlock,
+  isTextBlock,
+} from "../../../lib/content";
 import type { Block } from "../../../lib/schemas/block-schema.types";
 import urls from "../../../lib/urls";
+import BlockDetailAttachment from "./BlockDetailAttachment.astro";
+import BlockDetailChannel from "./BlockDetailChannel.astro";
+import BlockDetailEmbed from "./BlockDetailEmbed.astro";
 import BlockDetailImage from "./BlockDetailImage.astro";
+import BlockDetailLink from "./BlockDetailLink.astro";
+import BlockDetailMetaDataAttachment from "./BlockDetailMetaDataAttachment.astro";
+import BlockDetailMetaDataEmbed from "./BlockDetailMetaDataEmbed.astro";
 import BlockDetailMetaDataImage from "./BlockDetailMetaDataImage.astro";
 import BlockDetailMetaDataList from "./BlockDetailMetaDataList.astro";
 import BlockDetailMetaDataListItem from "./BlockDetailMetaDataListItem.astro";
+import BlockDetailText from "./BlockDetailText.astro";
 
 type Props = {
   block: Block;
@@ -15,16 +29,35 @@ type Props = {
 const { block, class: className } = Astro.props;
 
 let blockTitle: string | null = block.data.title;
+
 let ComponentDetail;
 let ComponentMetaData;
 switch (true) {
+  case isAttachmentBlock(block):
+    ComponentDetail = BlockDetailAttachment;
+    ComponentMetaData = BlockDetailMetaDataAttachment;
+    break;
+  case isChannelBlock(block):
+    ComponentDetail = BlockDetailChannel;
+    break;
+  case isEmbedBlock(block):
+    blockTitle = block.data.embed.title ? block.data.embed.title : blockTitle;
+    ComponentDetail = BlockDetailEmbed;
+    ComponentMetaData = BlockDetailMetaDataEmbed;
+    break;
   case isImageBlock(block):
     blockTitle = blockTitle ? blockTitle : block.data.image.filename;
     ComponentDetail = BlockDetailImage;
     ComponentMetaData = BlockDetailMetaDataImage;
     break;
+  case isLinkBlock(block):
+    ComponentDetail = BlockDetailLink;
+    break;
+  case isTextBlock(block):
+    ComponentDetail = BlockDetailText;
+    break;
   default:
-    ComponentDetail = BlockDetailImage;
+    console.warn(`Unsupported block type: ${block.data.type}`);
     break;
 }
 ---
@@ -39,8 +72,14 @@ switch (true) {
 >
   <div class:list={["order-2 space-y-4"]}>
     <header class:list={["space-y-2"]}>
-      <h2 class:list={["font-bold text-xl leading-snug truncate"]}>
-        {blockTitle}
+      <h2
+        class:list={[
+          "font-bold text-xl leading-snug truncate",
+          !blockTitle &&
+            "text-slate-300 selection:text-slate-50 selection:bg-slate-950",
+        ]}
+      >
+        {blockTitle ?? "No title"}
       </h2>
       {
         block.data.description ? (
@@ -51,7 +90,7 @@ switch (true) {
         ) : (
           <p
             class:list={[
-              "text-lg text-slate-200 selection:text-slate-50 selection:bg-slate-950",
+              "text-lg text-slate-300 selection:text-slate-50 selection:bg-slate-950",
             ]}
           >
             No description
@@ -109,6 +148,6 @@ switch (true) {
       "md:col-span-2 md:bg-slate-50 md:p-4",
     ]}
   >
-    <ComponentDetail block={block as any} />
+    {ComponentDetail && <ComponentDetail block={block as any} />}
   </section>
 </article>

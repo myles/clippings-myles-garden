@@ -1,0 +1,23 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Channel">;
+  class?: string[];
+};
+const { block, class: className } = Astro.props;
+---
+
+<div
+  class:list={["block-list-item-channel", "p-4 w-full text-center", className]}
+>
+  <h3 class:list={["font-bold text-3xl line-clamp-1"]}>{block.data.title}</h3>
+  {
+    block.data.description && (
+      <div
+        class:list={["text-xl font-medium"]}
+        set:html={block.data.description.html}
+      />
+    )
+  }
+</div>

@@ -1,0 +1,21 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+import BlockDetailMetaDataListItem from "./BlockDetailMetaDataListItem.astro";
+
+type Props = {
+  block: BlockBase<"Embed">;
+};
+const { block } = Astro.props;
+---
+
+<Fragment>
+  <BlockDetailMetaDataListItem name="Author">
+    <a
+      href={block.data.embed.author_url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {block.data.embed.author_name}
+    </a>
+  </BlockDetailMetaDataListItem>
+</Fragment>

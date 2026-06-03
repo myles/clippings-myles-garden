@@ -1,0 +1,19 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Embed">;
+  class?: string[];
+};
+const { block, class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "block-detail-embed",
+    "aspect-video",
+    "[&_iframe]:max-w-full [&_iframe]:max-h-full",
+    className,
+  ]}
+  set:html={block.data.embed.html}
+/>

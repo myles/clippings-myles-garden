@@ -6,7 +6,7 @@ export const channelSchema = z.object({
   type: z.literal("Channel"),
   slug: z.string(),
   title: z.string(),
-  description: markdownContentSchema,
+  description: markdownContentSchema.nullable(),
   state: z.enum(["available", "deleted"]),
   visibility: z.enum(["public", "private", "closed"]),
   created_at: z.string().transform((value) => parseISO(value)),

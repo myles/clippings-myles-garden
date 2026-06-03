@@ -1,0 +1,35 @@
+---
+import { filesize } from "filesize";
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+import BlockDetailMetaDataListItem from "./BlockDetailMetaDataListItem.astro";
+
+type Props = {
+  block: BlockBase<"Attachment">;
+};
+const { block } = Astro.props;
+
+const fileSzie = block.data.attachment.file_size
+  ? filesize(block.data.attachment.file_size, {
+      round: 0,
+      base: 10,
+      spacer: " ",
+    })
+  : "Unknown size";
+---
+
+<Fragment>
+  <BlockDetailMetaDataListItem name="Content type">
+    {block.data.attachment.content_type}
+  </BlockDetailMetaDataListItem>
+  <BlockDetailMetaDataListItem name="File size" class:list={["tabular-nums"]}>
+    {fileSzie}
+  </BlockDetailMetaDataListItem>
+  <BlockDetailMetaDataListItem name="Download">
+    <a
+      href={block.data.attachment.url}
+      download={block.data.attachment.filename}
+    >
+      Download.{block.data.attachment.file_extension}
+    </a>
+  </BlockDetailMetaDataListItem>
+</Fragment>

@@ -1,15 +1,17 @@
 ---
 import type { BlockBase } from "../../../lib/schemas/block-schema.types";
-import BlockImageSmall from "../shared/BlockImageSmall.astro";
+import BlockImageLarge from "../shared/BlockImageLarge.astro";
 
 type Props = {
-  block: BlockBase<"Image">;
+  block: BlockBase<"Link">;
   class?: string[];
 };
 const { block, class: className } = Astro.props;
 ---
 
-<BlockImageSmall
+<BlockImageLarge
   image={block.data.image}
-  class:list={["block-list-item-image", "p-2", className]}
+  href={block.data.source?.url}
+  isExternal
+  class:list={["block-detail-link", className]}
 />

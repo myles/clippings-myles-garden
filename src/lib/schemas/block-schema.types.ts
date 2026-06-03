@@ -1,6 +1,6 @@
 import type { LiveDataEntry } from "astro";
 import type { z } from "astro/zod";
-import { blockSchema } from "./block-schema";
+import { blockSchema, imageSchema } from "./block-schema";
 
 type BlockData = z.infer<typeof blockSchema>;
 export type BlockType = BlockData["type"];
@@ -10,3 +10,5 @@ export type BlockBase<T extends BlockType> = LiveDataEntry<
 >;
 
 export type Block = BlockBase<BlockType>;
+
+export type ImageSchema = z.infer<typeof imageSchema>;

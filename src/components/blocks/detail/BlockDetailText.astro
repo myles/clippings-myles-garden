@@ -1,0 +1,14 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Text">;
+  class?: string[];
+};
+const { block, class: className } = Astro.props;
+---
+
+<div
+  class:list={["block-detail-text", "prose max-w-none! size-full", className]}
+  set:html={block.data.content.html}
+/>

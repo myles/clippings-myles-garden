@@ -7,6 +7,7 @@ type EntryFilter = {
 
 type CollectionFilter = {
   channelId: string;
+  per?: number;
 };
 
 export function blockLoader(config: {
@@ -15,12 +16,12 @@ export function blockLoader(config: {
   return {
     name: "arena-block-loader",
     loadCollection: async ({ filter }) => {
-      const { channelId } = filter ?? {};
+      const { channelId, per = 100 } = filter ?? {};
       const url = new URL(
         `/v3/channels/${channelId}/contents`,
         "https://api.are.na",
       );
-      url.searchParams.set("per", "100");
+      url.searchParams.set("per", per.toString());
 
       try {
         const results = [];
@@ -44,7 +45,9 @@ export function blockLoader(config: {
         return {
           entries: results.map((block: ArenaBlock) => {
             const html =
-              "content" in block ? block.content.html : block.description?.html;
+              "content" in block
+                ? block.content?.html
+                : block.description?.html;
             return {
               id: block.id.toString(),
               data: block,
@@ -54,7 +57,9 @@ export function blockLoader(config: {
         };
       } catch (error) {
         return {
-          error: new Error("Failed to load the Arena blocks."),
+          error: new Error("Failed to load the Arena blocks.", {
+            cause: error,
+          }),
         };
       }
     },
@@ -76,7 +81,7 @@ export function blockLoader(config: {
         };
       } catch (error) {
         return {
-          error: new Error("Failed to load the Arena block."),
+          error: new Error("Failed to load the Arena block.", { cause: error }),
         };
       }
     },

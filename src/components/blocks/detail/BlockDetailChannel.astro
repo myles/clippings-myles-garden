@@ -1,0 +1,27 @@
+---
+import { getLiveCollection } from "astro:content";
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+import BlockList from "../list/BlockList.astro";
+import BlockListItem from "../list/BlockListItem.astro";
+
+type Props = {
+  block: BlockBase<"Channel">;
+  class?: string[];
+};
+const { block, class: className } = Astro.props;
+
+const channelSlug = block.data.slug;
+const { entries: channelBlocks, error: channelBlocksError } =
+  await getLiveCollection("blocks", { channelId: channelSlug, per: 12 });
+if (!channelBlocks) throw channelBlocksError;
+---
+
+<div class:list={["block-detail-channel", "size-full", className]}>
+  <BlockList>
+    {
+      channelBlocks
+        .slice(0, 12)
+        .map((block) => <BlockListItem block={block} useExternalLink />)
+    }
+  </BlockList>
+</div>

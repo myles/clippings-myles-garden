@@ -29,7 +29,7 @@ const imageVersionSchema = z.object({
   height: z.number().nullable(),
 });
 
-const imageSchema = z.object({
+export const imageSchema = z.object({
   alt_text: z.string().nullable(),
   blurhash: z.string().nullable(),
   width: z.number().nullable(),
@@ -86,22 +86,6 @@ const baseBlockSchema = z.object({
   can: abilitiesSchema.optional(),
 });
 
-const textBlockSchema = baseBlockSchema.extend({
-  type: z.literal("Text"),
-  content: markdownContentSchema,
-});
-
-const imageBlockSchema = baseBlockSchema.extend({
-  type: z.literal("Image"),
-  image: imageSchema,
-});
-
-const linkBlockSchema = baseBlockSchema.extend({
-  type: z.literal("Link"),
-  image: imageSchema,
-  content: markdownContentSchema,
-});
-
 const attachmentBlockSchema = baseBlockSchema.extend({
   type: z.literal("Attachment"),
   attachment: attachmentSchema,
@@ -114,11 +98,27 @@ const embedBlockSchema = baseBlockSchema.extend({
   image: imageSchema,
 });
 
+const imageBlockSchema = baseBlockSchema.extend({
+  type: z.literal("Image"),
+  image: imageSchema,
+});
+
+const linkBlockSchema = baseBlockSchema.extend({
+  type: z.literal("Link"),
+  image: imageSchema,
+  content: markdownContentSchema.nullable(),
+});
+
+const textBlockSchema = baseBlockSchema.extend({
+  type: z.literal("Text"),
+  content: markdownContentSchema,
+});
+
 export const blockSchema = z.discriminatedUnion("type", [
-  textBlockSchema,
+  attachmentBlockSchema,
+  channelSchema,
+  embedBlockSchema,
   imageBlockSchema,
   linkBlockSchema,
-  attachmentBlockSchema,
-  embedBlockSchema,
-  channelSchema,
+  textBlockSchema,
 ]);

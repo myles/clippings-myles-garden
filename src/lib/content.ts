@@ -6,4 +6,9 @@ const createIsBlockType = <T extends BlockType>(type: T) => {
     block.data.type === type;
 };
 
+export const isAttachmentBlock = createIsBlockType("Attachment");
+export const isChannelBlock = createIsBlockType("Channel");
+export const isEmbedBlock = createIsBlockType("Embed");
 export const isImageBlock = createIsBlockType("Image");
+export const isLinkBlock = createIsBlockType("Link");
+export const isTextBlock = createIsBlockType("Text");

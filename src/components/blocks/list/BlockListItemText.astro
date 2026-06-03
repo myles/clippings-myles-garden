@@ -1,0 +1,48 @@
+---
+import sanitizeHtml from "sanitize-html";
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Text">;
+  class?: string[];
+};
+const { block, class: className } = Astro.props;
+
+const cleanedHtml = sanitizeHtml(block.data.content.html, {
+  allowedTags: [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "p",
+    "ol",
+    "ul",
+    "li",
+    "strong",
+    "b",
+    "em",
+    "br",
+    "code",
+    "pre",
+    "div",
+  ],
+});
+---
+
+<div
+  class:list={[
+    "block-list-item-text",
+    "h-full overflow-hidden bg-linear-to-t/decreasing from-0% to-20% from-gray-300 to-transparent relative",
+    className,
+  ]}
+>
+  <div
+    class:list={[
+      "p-4 max-w-none!",
+      "prose prose-sm prose-headings:text-sm prose-headings:mb-1 prose-p:mb-0.5",
+    ]}
+    set:html={cleanedHtml}
+  />
+</div>

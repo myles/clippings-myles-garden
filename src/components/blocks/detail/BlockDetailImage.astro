@@ -1,35 +1,17 @@
 ---
-import { Picture } from "astro:assets";
 import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+import BlockImageLarge from "../shared/BlockImageLarge.astro";
 
 type Props = {
   block: BlockBase<"Image">;
   class?: string[];
 };
 const { block, class: className } = Astro.props;
-
-const width = block.data.image.large.width ?? 1800;
-const height = block.data.image.large.height ?? 1800;
 ---
 
-<Fragment>
-  <a
-    href={block.data.image.src}
-    target="_blank"
-    rel="noopener noreferrer"
-    class:list={[
-      "block-detail-image",
-      "flex justify-center items-center",
-      className,
-    ]}
-  >
-    <Picture
-      src={block.data.image.src}
-      alt={block.data.image.alt_text ?? ""}
-      width={width}
-      height={height}
-      formats={["avif", "webp"]}
-      class:list={["block max-h-[calc(100svh-20rem)] w-auto"]}
-    />
-  </a>
-</Fragment>
+<BlockImageLarge
+  image={block.data.image}
+  href={block.data.source?.url}
+  isExternal
+  class:list={["block-detail-image", className]}
+/>

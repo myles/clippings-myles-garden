@@ -1,0 +1,27 @@
+---
+import { Picture } from "astro:assets";
+import type { ImageSchema } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  image: ImageSchema;
+  href?: string;
+  isExternal?: boolean;
+  class?: string[];
+};
+const { image, class: className } = Astro.props;
+
+const width = image.square.width ?? 768;
+const height = image.square.height ?? 768;
+---
+
+<Picture
+  src={image.src}
+  alt={image.alt_text ?? ""}
+  width={width}
+  height={height}
+  widths={[384, 768, 1536]}
+  sizes={`(max-width: 1536px) 384px, 768px, 1536px, 100vh`}
+  formats={["avif", "webp"]}
+  class:list={["w-full h-full object-contain", className]}
+  pictureAttributes={{ class: "contents" }}
+/>

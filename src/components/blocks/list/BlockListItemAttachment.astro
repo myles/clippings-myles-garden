@@ -3,7 +3,7 @@ import type { BlockBase } from "../../../lib/schemas/block-schema.types";
 import BlockImageSmall from "../shared/BlockImageSmall.astro";
 
 type Props = {
-  block: BlockBase<"Image">;
+  block: BlockBase<"Attachment">;
   class?: string[];
 };
 const { block, class: className } = Astro.props;
@@ -11,5 +11,5 @@ const { block, class: className } = Astro.props;
 
 <BlockImageSmall
   image={block.data.image}
-  class:list={["block-list-item-image", "p-2", className]}
+  class:list={["block-list-item-attachment", "p-2", className]}
 />

@@ -6,7 +6,13 @@ type Props = {
 const { name, class: className } = Astro.props;
 ---
 
-<div class:list={["block-detail-meta-data-list", className]}>
+<div
+  class:list={[
+    "block-detail-meta-data-list",
+    "[&_a]:font-bold [&_a]:underline [&_a]:hover:decoration-2 [&_a]:hover:decoration-red-500",
+    className,
+  ]}
+>
   <dt>{name}</dt>
   <dd>
     <slot />

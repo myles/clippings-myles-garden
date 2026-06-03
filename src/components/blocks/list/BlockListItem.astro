@@ -1,29 +1,64 @@
 ---
-import { isImageBlock } from "../../../lib/content";
+import {
+  isAttachmentBlock,
+  isChannelBlock,
+  isEmbedBlock,
+  isImageBlock,
+  isLinkBlock,
+  isTextBlock,
+} from "../../../lib/content";
 import type { Block } from "../../../lib/schemas/block-schema.types";
+import urls from "../../../lib/urls";
+import BlockListItemAttachment from "./BlockListItemAttachment.astro";
+import BlockListItemChannel from "./BlockListItemChannel.astro";
+import BlockListItemEmbed from "./BlockListItemEmbed.astro";
 import BlockListItemImage from "./BlockListItemImage.astro";
+import BlockListItemLink from "./BlockListItemLink.astro";
+import BlockListItemText from "./BlockListItemText.astro";
 
 type Props = {
   block: Block;
+  useExternalLink?: boolean;
   class?: string[];
 };
-const { block, class: className } = Astro.props;
+const { block, useExternalLink = false, class: className } = Astro.props;
 
 let Component;
 switch (true) {
+  case isAttachmentBlock(block):
+    Component = BlockListItemAttachment;
+    break;
+  case isChannelBlock(block):
+    Component = BlockListItemChannel;
+    break;
+  case isEmbedBlock(block):
+    Component = BlockListItemEmbed;
+    break;
   case isImageBlock(block):
     Component = BlockListItemImage;
     break;
+  case isLinkBlock(block):
+    Component = BlockListItemLink;
+    break;
+  case isTextBlock(block):
+    Component = BlockListItemText;
+    break;
   default:
+    console.log(`Unsupported block type: ${block.data.type}`);
+    console.log(JSON.stringify(block, null, 2));
     break;
 }
 ---
 
 <li class:list={["block-list-item", className]}>
   <a
-    href={`/${block.id}`}
+    href={useExternalLink
+      ? urls.external.block(block.id)
+      : urls.block.detail(block.id)}
+    target={useExternalLink ? "_blank" : undefined}
+    rel={useExternalLink ? "noopener noreferrer" : undefined}
     class:list={[
-      "size-full aspect-square flex justify-center items-center bg-slate-50 border border-slate-100 p-4",
+      "size-full aspect-square flex justify-center items-center bg-slate-50 border border-slate-100",
       "hover:bg-slate-100",
     ]}
   >

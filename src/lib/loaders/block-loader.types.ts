@@ -98,7 +98,7 @@ export type ArenaImageBlock = ArenaBaseBlock & {
 export type ArenaLinkBlock = ArenaBaseBlock & {
   type: "Link";
   image: ArenaBlockImage;
-  content: ArenaMarkdowContent;
+  content?: ArenaMarkdowContent;
 };
 
 export type ArenaAttachmentBlock = ArenaBaseBlock & {

@@ -1,0 +1,38 @@
+---
+import { Picture } from "astro:assets";
+import type { ImageSchema } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  image: ImageSchema;
+  href?: string;
+  isExternal?: boolean;
+  class?: string[];
+};
+const { image, href, isExternal = false, class: className } = Astro.props;
+
+const imageWidth = image.large.width ?? 1800;
+const imageHeight = image.large.height ?? 1800;
+
+const Element = href ? "a" : "div";
+---
+
+<Element
+  href={href}
+  target={href && isExternal ? "_blank" : undefined}
+  rel={href && isExternal ? "noopener noreferrer" : undefined}
+  class:list={[
+    "block-image-large",
+    "flex justify-center items-center",
+    className,
+  ]}
+>
+  <Picture
+    src={image.src}
+    alt={image.alt_text ?? ""}
+    width={imageWidth}
+    height={imageHeight}
+    formats={["avif", "webp"]}
+    class:list={["block max-h-[calc(100svh-20rem)] w-auto"]}
+    pictureAttributes={{ class: "contents" }}
+  />
+</Element>
