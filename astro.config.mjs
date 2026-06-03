@@ -7,6 +7,9 @@ import config from "./src/config";
 // https://astro.build/config
 export default defineConfig({
   site: config.SITE_URL,
+  image: {
+    domains: ["d2w9rnfcy7mm78.cloudfront.net"],
+  },
   vite: {
     plugins: [tailwindcss()],
   },

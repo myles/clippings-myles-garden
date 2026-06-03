@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import type { BlockBase } from "../../../lib/schemas/block-schema.types";
 
 type Props = {
@@ -7,6 +7,9 @@ type Props = {
   class?: string[];
 };
 const { block, class: className } = Astro.props;
+
+const width = block.data.image.large.width ?? 1800;
+const height = block.data.image.large.height ?? 1800;
 ---
 
 <Fragment>
@@ -20,11 +23,12 @@ const { block, class: className } = Astro.props;
       className,
     ]}
   >
-    <Image
-      src={block.data.image.large.src}
+    <Picture
+      src={block.data.image.src}
       alt={block.data.image.alt_text ?? ""}
-      width={block.data.image.large.width ?? 800}
-      height={block.data.image.large.height ?? 600}
+      width={width}
+      height={height}
+      formats={["avif", "webp"]}
       class:list={["block max-h-[calc(100svh-20rem)] w-auto"]}
     />
   </a>
