@@ -14,7 +14,12 @@ const isLastPage = page.end + 1 === page.total;
 ---
 
 <div
-  class:list={["pagination", "flex items-center justify-between", className]}
+  class:list={[
+    "pagination",
+    "flex items-center justify-center",
+    "sm:justify-between",
+    className,
+  ]}
 >
   <div class:list={["sm:flex sm:flex-1 sm:items-center sm:justify-between"]}>
     <p class:list={["hidden sm:block"]}>
