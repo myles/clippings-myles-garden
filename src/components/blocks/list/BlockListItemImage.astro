@@ -7,7 +7,6 @@ type Props = {
   class?: string[];
 };
 const { block, class: className } = Astro.props;
-console.log({ blurhash: block.data.image.blurhash });
 
 const width = block.data.image.square.width ?? 768;
 const height = block.data.image.square.height ?? 768;
