@@ -5,7 +5,7 @@ export type Props = {
 const { class: className } = Astro.props;
 ---
 
-<footer class:list={["ui-footer", "text-center", className]}>
+<footer class:list={["ui-footer", "text-center space-y-4", className]}>
   <p
     class:list={[
       "[&_.heart]:text-red-500 [&_.heart]:text-2xl [&_.heart]:inline-block [&_.heart]:align-middle",
@@ -19,4 +19,13 @@ const { class: className } = Astro.props;
       >are.na</a
     >.
   </p>
+  <a
+    href="https://registry.myles.garden/MB-61"
+    class:list={[
+      "inline-block border-4 px-2 py-1 font-mono text-sm font-bold decoration-0 transition-colorsborder-black text-black",
+      "hover:bg-black hover:text-white hover:border-black",
+    ]}
+    target="_blank"
+    rel="noopener noreferrer">MB 61</a
+  >
 </footer>
