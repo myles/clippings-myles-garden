@@ -2,6 +2,7 @@ import rss from "@astrojs/rss";
 import type { APIContext } from "astro";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 import config from "../config";
+import { sortBlocksByCreatedAt } from "../lib/content";
 import { formatBlockToFeedContent } from "../lib/feed";
 import urls from "../lib/urls";
 
@@ -26,7 +27,7 @@ export async function GET(context: APIContext) {
     description: channel.data.description ? channel.data.description.plain : "",
     site,
     items: await Promise.all(
-      blocks.map(async (block) => ({
+      blocks.sort(sortBlocksByCreatedAt).map(async (block) => ({
         title: block.data.title ?? "",
         description: block.data.description?.plain ?? undefined,
         pubDate: block.data.created_at,

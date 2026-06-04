@@ -2,6 +2,7 @@ import type { APIContext } from "astro";
 import jsonFeed from "astro-jsonfeed";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 import config from "../config";
+import { sortBlocksByCreatedAt } from "../lib/content";
 import { formatBlockToFeedContent } from "../lib/feed";
 import urls from "../lib/urls";
 
@@ -28,11 +29,14 @@ export async function GET(context: APIContext) {
         ? channel.data.description.plain
         : undefined,
       items: await Promise.all(
-        blocks.map(async (block) => ({
+        blocks.sort(sortBlocksByCreatedAt).map(async (block) => ({
           id: urls.block.detail(block.id),
           url: new URL(urls.block.detail(block.id), context.site).href,
+          external_url: urls.external.block(block.id),
           title: block.data.title ?? undefined,
           summary: block.data.description?.plain ?? undefined,
+          date_published: block.data.created_at,
+          date_modified: block.data.updated_at,
           content_html: await formatBlockToFeedContent(block, context),
         })),
       ),
