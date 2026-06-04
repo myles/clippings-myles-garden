@@ -4,8 +4,21 @@ export type Props = {
   description?: string;
   siteTitle: string;
   siteDescription?: string;
+  canonicalURL?: string;
+  structuredData?: unknown;
 };
-const { title, description, siteTitle, siteDescription } = Astro.props;
+const {
+  title,
+  description,
+  siteTitle,
+  siteDescription,
+  canonicalURL: incomingCanonicalURL,
+  structuredData,
+} = Astro.props;
+
+const canonicalURL = incomingCanonicalURL
+  ? incomingCanonicalURL
+  : new URL(Astro.url.pathname, Astro.site);
 ---
 
 <head>
@@ -23,6 +36,7 @@ const { title, description, siteTitle, siteDescription } = Astro.props;
     )
   }
 
+  {/* Feeds */}
   <link
     rel="alternate"
     title={`${siteTitle} JSON Feed`}
@@ -34,5 +48,57 @@ const { title, description, siteTitle, siteDescription } = Astro.props;
     title={`${siteTitle} RSS Feed`}
     type="application/rss+xml"
     href={new URL("/feed.xml", Astro.site).href}
+  />
+
+  {/* IndieAuth Tags */}
+  <link rel="authorization_endpoint" href="https://indieauth.com/auth" />
+  <link rel="token_endpoint" href="https://tokens.indieauth.com/token" />
+
+  <link rel="me" href="mailto:myles@myles.garden" />
+
+  <link rel="me" href="https://myles.garden" />
+  <link rel="me" href="https://cosocial.ca/@myles" />
+  <link rel="me" href="https://github.com/myles" />
+  <link rel="me" href="https://instagram.com/myles/" />
+  <link rel="me" href="https://linkedin.com/in/mylesbraithwaite/" />
+
+  {/* omg.lol */}
+  <link href="https://proven.lol/80d858" />
+  <link rel="me" href="https://milo.omg.lol/" />
+  <link rel="me" href="https://social.lol/@milo" />
+
+  {/* Fediverse Creator Tag */}
+  <meta name="fediverse:creator" content="@myles@cosocial.ca" />
+
+  {/* Open Graph */}
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title || siteTitle} />
+  <meta
+    property="og:description"
+    content={description || siteDescription || ""}
+  />
+  <meta property="og:site_name" content={siteTitle} />
+
+  {/* Twitter Card */}
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:title" content={siteTitle} />
+  <meta name="twitter:description" content={siteDescription} />
+
+  {/* JSON-LD Structured Data */}
+  {
+    structuredData && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(structuredData)}
+      />
+    )
+  }
+
+  <link
+    rel="webmention"
+    href={`https://webmention.io/myles.garden/webmention`}
   />
 </head>
