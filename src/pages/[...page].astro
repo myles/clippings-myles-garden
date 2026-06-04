@@ -6,6 +6,7 @@ import BlockListItem from "../components/blocks/list/BlockListItem.astro";
 import Pagination from "../components/ui/Pagination.astro";
 import config from "../config";
 import Layout from "../layouts/Layout.astro";
+import urls from "../lib/urls";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const { entries: blocks, error: blocksError } = await getLiveCollection(
@@ -29,6 +30,8 @@ const { page } = Astro.props;
 <Layout
   siteTitle={channel.data.title}
   siteDescription={channel.data.description?.plain}
+  siteDescriptionHtml={channel.data.description?.html}
+  arenaChannelUrl={urls.external.channel(channel.data.slug)}
 >
   <BlockList>
     {page.data.map((block) => <BlockListItem block={block} />)}

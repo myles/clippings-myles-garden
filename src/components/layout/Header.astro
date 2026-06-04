@@ -1,26 +1,68 @@
 ---
+import { Image } from "astro:assets";
+import ArenaLogoImage from "../../assets/arena-logo.png";
+import ButtonLink from "../../components/ui/ButtonLink.astro";
+
 export type Props = {
   siteTitle: string;
-  siteDescription?: string;
+  siteDescriptionHtml?: string;
+  arenaChannelUrl: string;
   class?: string[];
 };
-const { siteTitle, siteDescription, class: className } = Astro.props;
+const {
+  siteTitle,
+  siteDescriptionHtml,
+  arenaChannelUrl,
+  class: className,
+} = Astro.props;
 ---
 
-<header class:list={["ui-header", className]}>
-  <h1>
-    <a
-      href="/"
-      class:list={[
-        "font-bold text-4xl underline decoration-red-500 decoration-2",
-        "hover:text-red-500 transition duration-150",
-      ]}>{siteTitle}</a
-    >
-  </h1>
+<header
+  class:list={[
+    "ui-header",
+    "grid grid-cols-4 gap-4 text-center",
+    "sm:text-left",
+    className,
+  ]}
+>
+  <div class:list={["col-span-full", "sm:col-span-2", "md:col-span-3"]}>
+    <h1>
+      <a
+        href="/"
+        class:list={[
+          "font-bold text-4xl underline decoration-red-500 decoration-2",
+          "hover:text-red-500 transition duration-150",
+        ]}>{siteTitle}</a
+      >
+    </h1>
 
-  {
-    siteDescription && (
-      <p class:list={["text-2xl font-medium"]}>{siteDescription}</p>
-    )
-  }
+    {
+      siteDescriptionHtml && (
+        <div
+          class:list={[
+            "prose-2xl prose-base:text-black prose-p:leading-tight prose-p:font-medium max-w-none! prose-a:underline",
+          ]}
+          set:html={siteDescriptionHtml}
+        />
+      )
+    }
+  </div>
+  <div
+    class:list={[
+      "col-span-full text-center",
+      "sm:col-span-2 sm:text-right",
+      "md:col-span-1",
+    ]}
+  >
+    <ButtonLink href={arenaChannelUrl} isExternal>
+      <Image
+        src={ArenaLogoImage}
+        alt="Are.na Logo"
+        height={128}
+        width={128}
+        class:list={["inline-block size-4 align-middle mb-1"]}
+      />
+      <span class:list={["text-base"]}> Follow on Are.na </span>
+    </ButtonLink>
+  </div>
 </header>

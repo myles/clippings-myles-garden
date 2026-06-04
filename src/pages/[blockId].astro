@@ -3,6 +3,7 @@ import { getLiveCollection, getLiveEntry } from "astro:content";
 import BlockDetail from "../components/blocks/detail/BlockDetail.astro";
 import config from "../config";
 import Layout from "../layouts/Layout.astro";
+import urls from "../lib/urls";
 
 export async function getStaticPaths() {
   const { entries: blocks, error: blocksError } = await getLiveCollection(
@@ -31,6 +32,8 @@ if (!channel) throw channelError;
   description={block.data.description?.plain}
   siteTitle={channel.data.title}
   siteDescription={channel.data.description?.plain}
+  siteDescriptionHtml={channel.data.description?.html}
+  arenaChannelUrl={urls.external.channel(channel.data.slug)}
 >
   <BlockDetail block={block} />
 </Layout>

@@ -1,0 +1,38 @@
+---
+export type Props = {
+  title?: string;
+  description?: string;
+  siteTitle: string;
+  siteDescription?: string;
+};
+const { title, description, siteTitle, siteDescription } = Astro.props;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+  />
+  <meta name="generator" content={Astro.generator} />
+
+  <title>{title && `${title} | `}{siteTitle}</title>
+  {
+    (description || siteDescription) && (
+      <meta name="description" content={description || siteDescription} />
+    )
+  }
+
+  <link
+    rel="alternate"
+    title={`${siteTitle} JSON Feed`}
+    type="application/feed+json"
+    href={new URL("/feed.json", Astro.site).href}
+  />
+  <link
+    rel="alternate"
+    title={`${siteTitle} RSS Feed`}
+    type="application/rss+xml"
+    href={new URL("/feed.xml", Astro.site).href}
+  />
+</head>

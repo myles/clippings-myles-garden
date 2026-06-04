@@ -4,14 +4,16 @@ import type { HTMLAttributes } from "astro/types";
 export interface Props extends Omit<HTMLAttributes<"a">, "class" | "href"> {
   href?: string;
   disabled?: boolean;
+  isExternal?: boolean;
   class?: string | string[];
 }
 const {
   href,
   disabled,
-  class: className,
   title,
   target,
+  isExternal,
+  class: className,
 } = Astro.props as Props;
 
 const Element = disabled ? "span" : "a";
@@ -20,9 +22,10 @@ const Element = disabled ? "span" : "a";
 <Element
   href={href}
   title={title}
-  target={target}
+  target={target || (isExternal ? "_blank" : null)}
+  rel={isExternal ? "noopener noreferrer" : null}
   class:list={[
-    "block rounded border border-black/50 px-2 py-1",
+    "inline-block rounded border border-black/50 px-2 py-1",
     href && "hover:bg-black/5",
     disabled && "cursor-not-allowed opacity-50",
     className,
