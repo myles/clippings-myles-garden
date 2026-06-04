@@ -1,0 +1,10 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Text">;
+};
+const { block } = Astro.props;
+---
+
+<div set:html={block.data.content.html} />

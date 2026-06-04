@@ -23,7 +23,7 @@ export async function GET(context: APIContext) {
 
   return rss({
     title: channel.data.title,
-    description: channel.data.description.plain,
+    description: channel.data.description ? channel.data.description.plain : "",
     site,
     items: await Promise.all(
       blocks.map(async (block) => ({

@@ -1,0 +1,13 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+import urls from "../../../lib/urls";
+
+type Props = {
+  block: BlockBase<"Channel">;
+};
+const { block } = Astro.props;
+---
+
+<p>
+  View channel: <a href={urls.external.block(block.id)}>{block.data.title}</a>
+</p>

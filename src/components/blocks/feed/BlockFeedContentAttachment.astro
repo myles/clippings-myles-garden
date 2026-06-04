@@ -1,0 +1,14 @@
+---
+import type { BlockBase } from "../../../lib/schemas/block-schema.types";
+
+type Props = {
+  block: BlockBase<"Attachment">;
+};
+const { block } = Astro.props;
+---
+
+<p>
+  Click here to view the attachment: <a href={block.data.attachment.url}
+    >{block.data.attachment.filename}</a
+  >
+</p>

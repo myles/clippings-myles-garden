@@ -1,7 +1,19 @@
 ---
-import { isImageBlock } from "../../../lib/content";
+import {
+  isAttachmentBlock,
+  isChannelBlock,
+  isEmbedBlock,
+  isImageBlock,
+  isLinkBlock,
+  isTextBlock,
+} from "../../../lib/content";
 import type { Block } from "../../../lib/schemas/block-schema.types";
+import BlockFeedContentAttachment from "./BlockFeedContentAttachment.astro";
+import BlockFeedContentChannel from "./BlockFeedContentChannel.astro";
+import BlockFeedContentEmbed from "./BlockFeedContentEmbed.astro";
 import BlockFeedContentImage from "./BlockFeedContentImage.astro";
+import BlockFeedContentLink from "./BlockFeedContentLink.astro";
+import BlockFeedContentText from "./BlockFeedContentText.astro";
 
 type Props = {
   block: Block;
@@ -9,15 +21,30 @@ type Props = {
 
 const { block } = Astro.props;
 
-let ComponentDetail;
+let Component;
 switch (true) {
+  case isAttachmentBlock(block):
+    Component = BlockFeedContentAttachment;
+    break;
+  case isChannelBlock(block):
+    Component = BlockFeedContentChannel;
+    break;
+  case isEmbedBlock(block):
+    Component = BlockFeedContentEmbed;
+    break;
   case isImageBlock(block):
-    ComponentDetail = BlockFeedContentImage;
+    Component = BlockFeedContentImage;
+    break;
+  case isLinkBlock(block):
+    Component = BlockFeedContentLink;
+    break;
+  case isTextBlock(block):
+    Component = BlockFeedContentText;
     break;
   default:
-    ComponentDetail = BlockFeedContentImage;
+    console.warn(`Unsupported block type: ${block.data.type}`);
     break;
 }
 ---
 
-<ComponentDetail block={block} />
+{Component && <Component block={block as any} />}
