@@ -1,12 +1,12 @@
 ---
+import BlockList from "@/components/blocks/list/BlockList.astro";
+import BlockListItem from "@/components/blocks/list/BlockListItem.astro";
+import Pagination from "@/components/ui/Pagination.astro";
+import config from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import urls from "@/lib/urls";
 import type { GetStaticPathsOptions } from "astro";
 import { getLiveCollection, getLiveEntry } from "astro:content";
-import BlockList from "../components/blocks/list/BlockList.astro";
-import BlockListItem from "../components/blocks/list/BlockListItem.astro";
-import Pagination from "../components/ui/Pagination.astro";
-import config from "../config";
-import Layout from "../layouts/Layout.astro";
-import urls from "../lib/urls";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const { entries: blocks, error: blocksError } = await getLiveCollection(

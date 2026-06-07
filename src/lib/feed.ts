@@ -1,7 +1,7 @@
+import BlockFeedContent from "@/components/blocks/feed/BlockFeedContent.astro";
 import type { APIContext } from "astro";
 import { experimental_AstroContainer } from "astro/container";
 import sanitizeHtml from "sanitize-html";
-import BlockFeedContent from "../components/blocks/feed/BlockFeedContent.astro";
 import type { Block } from "./schemas/block-schema.types";
 
 const isAbsoluteURL = (url: string): boolean => {

@@ -1,9 +1,9 @@
 ---
+import BlockDetail from "@/components/blocks/detail/BlockDetail.astro";
+import config from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import urls from "@/lib/urls";
 import { getLiveCollection, getLiveEntry } from "astro:content";
-import BlockDetail from "../components/blocks/detail/BlockDetail.astro";
-import config from "../config";
-import Layout from "../layouts/Layout.astro";
-import urls from "../lib/urls";
 
 export async function getStaticPaths() {
   const { entries: blocks, error: blocksError } = await getLiveCollection(

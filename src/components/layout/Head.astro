@@ -1,5 +1,5 @@
 ---
-import config from "../../config";
+import config from "@/config";
 
 export type Props = {
   title?: string;
@@ -110,6 +110,7 @@ const canonicalURL = incomingCanonicalURL
       <script
         src={`https://tinylytics.app/embed/${config.SITE_TINYLYTICS_ID}.js`}
         defer
+        is:inline
       />
     )
   }

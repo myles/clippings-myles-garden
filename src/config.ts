@@ -1,6 +1,13 @@
 import "dotenv/config";
 
-const loadConfig = (): Record<string, string | undefined> => {
+type Config = {
+  SITE_URL: string;
+  ARENA_API_KEY: string;
+  ARENA_CHANNEL_ID: string;
+  SITE_TINYLYTICS_ID?: string;
+};
+
+const loadConfig = (): Config => {
   const {
     CLIPPINGS_SITE_URL = "https://clippings.myles.garden",
     CLIPPINGS_ARENA_API_KEY,

@@ -1,10 +1,10 @@
+import config from "@/config";
+import { sortBlocksByCreatedAt } from "@/lib/content";
+import { formatBlockToFeedContent } from "@/lib/feed";
+import urls from "@/lib/urls";
 import type { APIContext } from "astro";
 import jsonFeed from "astro-jsonfeed";
 import { getLiveCollection, getLiveEntry } from "astro:content";
-import config from "../config";
-import { sortBlocksByCreatedAt } from "../lib/content";
-import { formatBlockToFeedContent } from "../lib/feed";
-import urls from "../lib/urls";
 
 export async function GET(context: APIContext) {
   const { site } = context;

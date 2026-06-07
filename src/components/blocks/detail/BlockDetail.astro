@@ -1,5 +1,4 @@
 ---
-import { formatDate, formatISO } from "date-fns";
 import {
   isAttachmentBlock,
   isChannelBlock,
@@ -7,9 +6,10 @@ import {
   isImageBlock,
   isLinkBlock,
   isTextBlock,
-} from "../../../lib/content";
-import type { Block } from "../../../lib/schemas/block-schema.types";
-import urls from "../../../lib/urls";
+} from "@/lib/content";
+import type { Block } from "@/lib/schemas/block-schema.types";
+import urls from "@/lib/urls";
+import { formatDate, formatISO } from "date-fns";
 import BlockDetailAttachment from "./BlockDetailAttachment.astro";
 import BlockDetailChannel from "./BlockDetailChannel.astro";
 import BlockDetailEmbed from "./BlockDetailEmbed.astro";
