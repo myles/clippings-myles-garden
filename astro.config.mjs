@@ -1,4 +1,5 @@
 // @ts-check
+import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
@@ -10,6 +11,7 @@ export default defineConfig({
   image: {
     domains: ["d2w9rnfcy7mm78.cloudfront.net"],
   },
+  integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },

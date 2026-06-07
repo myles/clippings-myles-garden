@@ -6,7 +6,7 @@ export type Props = {
   description?: string;
   siteTitle: string;
   siteDescription?: string;
-  canonicalURL?: string;
+  canonicalUrl?: string;
   structuredData?: unknown;
 };
 const {
@@ -14,12 +14,12 @@ const {
   description,
   siteTitle,
   siteDescription,
-  canonicalURL: incomingCanonicalURL,
+  canonicalUrl: incomingCanonicalUrl,
   structuredData,
 } = Astro.props;
 
-const canonicalURL = incomingCanonicalURL
-  ? incomingCanonicalURL
+const canonicalUrl = incomingCanonicalUrl
+  ? incomingCanonicalUrl
   : new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -37,6 +37,9 @@ const canonicalURL = incomingCanonicalURL
       <meta name="description" content={description || siteDescription} />
     )
   }
+
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="sitemap" href={new URL("/sitemap-index.xml", Astro.site).href} />
 
   {/* Feeds */}
   <link
@@ -79,7 +82,7 @@ const canonicalURL = incomingCanonicalURL
 
   {/* Open Graph */}
   <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:url" content={canonicalUrl} />
   <meta property="og:title" content={title || siteTitle} />
   <meta
     property="og:description"
@@ -89,7 +92,7 @@ const canonicalURL = incomingCanonicalURL
 
   {/* Twitter Card */}
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:url" content={canonicalUrl} />
   <meta name="twitter:title" content={siteTitle} />
   <meta name="twitter:description" content={siteDescription} />
 
