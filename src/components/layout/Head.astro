@@ -1,4 +1,6 @@
 ---
+import config from "../../config";
+
 export type Props = {
   title?: string;
   description?: string;
@@ -62,6 +64,11 @@ const canonicalURL = incomingCanonicalURL
   <link rel="me" href="https://instagram.com/myles/" />
   <link rel="me" href="https://linkedin.com/in/mylesbraithwaite/" />
 
+  <link
+    rel="webmention"
+    href={`https://webmention.io/myles.garden/webmention`}
+  />
+
   {/* omg.lol */}
   <link href="https://proven.lol/80d858" />
   <link rel="me" href="https://milo.omg.lol/" />
@@ -97,8 +104,13 @@ const canonicalURL = incomingCanonicalURL
     )
   }
 
-  <link
-    rel="webmention"
-    href={`https://webmention.io/myles.garden/webmention`}
-  />
+  {/* Tinylytics Track Code */}
+  {
+    config.SITE_TINYLYTICS_ID && (
+      <script
+        src={`https://tinylytics.app/embed/${config.SITE_TINYLYTICS_ID}.js`}
+        defer
+      />
+    )
+  }
 </head>
