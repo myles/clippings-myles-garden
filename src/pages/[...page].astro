@@ -15,7 +15,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   );
   if (!blocks) throw blocksError;
 
-  return paginate(blocks, { pageSize: 12 });
+  return paginate(blocks, { pageSize: config.PAGE_SIZE });
 }
 
 const { entry: channel, error: channelError } = await getLiveEntry(

@@ -5,6 +5,7 @@ type Config = {
   ARENA_API_KEY: string;
   ARENA_CHANNEL_ID: string;
   SITE_TINYLYTICS_ID?: string;
+  PAGE_SIZE: number;
 };
 
 const loadConfig = (): Config => {
@@ -13,6 +14,7 @@ const loadConfig = (): Config => {
     CLIPPINGS_ARENA_API_KEY,
     CLIPPINGS_ARENA_CHANNEL_ID,
     CLIPPINGS_SITE_TINYLYTICS_ID,
+    CLIPPINGS_PAGE_SIZE,
   } = process.env;
 
   if (!CLIPPINGS_ARENA_API_KEY) {
@@ -27,6 +29,7 @@ const loadConfig = (): Config => {
     ARENA_API_KEY: CLIPPINGS_ARENA_API_KEY,
     ARENA_CHANNEL_ID: CLIPPINGS_ARENA_CHANNEL_ID,
     SITE_TINYLYTICS_ID: CLIPPINGS_SITE_TINYLYTICS_ID,
+    PAGE_SIZE: CLIPPINGS_PAGE_SIZE ? parseInt(CLIPPINGS_PAGE_SIZE) : 12,
   };
 };
 
