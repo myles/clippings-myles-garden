@@ -1,8 +1,12 @@
 import BlockFeedContent from "@/components/blocks/feed/BlockFeedContent.astro";
+import type { RSSFeedItem, RSSOptions } from "@astrojs/rss";
 import type { APIContext } from "astro";
+import type { JsonFeedItem, JsonFeedOptions } from "astro-jsonfeed/types";
 import { experimental_AstroContainer } from "astro/container";
 import sanitizeHtml from "sanitize-html";
 import type { Block } from "./schemas/block-schema.types";
+import type { Channel } from "./schemas/channel-schema.types";
+import urls from "./urls";
 
 const isAbsoluteURL = (url: string): boolean => {
   return url.indexOf("://") > 0 || url.indexOf("//") === 0;
@@ -47,3 +51,48 @@ export const formatBlockToFeedContent = async (
 
   return sanitizePostHtml(rawContent, site);
 };
+
+export const formatChannelToFeedJson = async (
+  channel: Channel,
+  context: APIContext,
+): Promise<JsonFeedOptions> => ({
+  title: channel.data.title,
+  description: channel.data.description?.plain ?? undefined,
+  home_page_url: new URL(urls.index(), context.site).href,
+  items: [],
+});
+
+export const formatBlockToFeedJsonItem = async (
+  block: Block,
+  context: APIContext,
+): Promise<JsonFeedItem> => ({
+  id: urls.block.detail(block.id),
+  url: new URL(urls.block.detail(block.id), context.site).href,
+  external_url: urls.external.block(block.id),
+  title: block.data.title ?? undefined,
+  summary: block.data.description?.plain ?? undefined,
+  date_published: block.data.created_at,
+  date_modified: block.data.updated_at,
+  content_html: await formatBlockToFeedContent(block, context),
+});
+
+export const formatChannelToFeedXML = async (
+  channel: Channel,
+  context: APIContext,
+): Promise<RSSOptions> => ({
+  title: channel.data.title,
+  description: channel.data.description ? channel.data.description.plain : "",
+  site: new URL(urls.index(), context.site).href,
+  items: [],
+});
+
+export const formatBlockToFeedXMLItem = async (
+  block: Block,
+  context: APIContext,
+): Promise<RSSFeedItem> => ({
+  title: block.data.title ?? "",
+  description: block.data.description?.plain ?? undefined,
+  pubDate: block.data.created_at,
+  link: new URL(urls.block.detail(block.id), context.site).href,
+  content: await formatBlockToFeedContent(block, context),
+});
