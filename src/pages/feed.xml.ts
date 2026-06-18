@@ -25,6 +25,7 @@ export async function GET(context: APIContext) {
     ...(await formatChannelToFeedXML(channel, context)),
     items: await Promise.all(
       blocks
+        .slice(0, config.PAGE_SIZE)
         .sort(sortBlocksByCreatedAt)
         .map(async (block) => formatBlockToFeedXMLItem(block, context)),
     ),
