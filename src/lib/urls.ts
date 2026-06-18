@@ -2,7 +2,7 @@ export default {
   index: () => `/`,
 
   block: {
-    detail: (blockId: string | number) => `/${blockId}`,
+    detail: (blockId: string | number) => `/block/${blockId}`,
   },
 
   external: {

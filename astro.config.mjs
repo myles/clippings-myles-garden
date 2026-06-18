@@ -11,6 +11,9 @@ export default defineConfig({
   image: {
     domains: ["d2w9rnfcy7mm78.cloudfront.net"],
   },
+  redirects: {
+    "/block": "/",
+  },
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
