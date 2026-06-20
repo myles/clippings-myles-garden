@@ -18,7 +18,7 @@
     "@astrojs/vercel": "^10.0.7",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.3.8",
+    "astro": "^6.4.8",
     "astro-jsonfeed": "^1.0.2",
     "date-fns": "^4.3.0",
     "dotenv": "^17.4.2",
