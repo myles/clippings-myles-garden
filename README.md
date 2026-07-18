@@ -25,7 +25,7 @@ The site will be available at `http://localhost:4321`.
 This site reads from an Are.na channel via the public Are.na API. Configure your channel by creating a `.env` file in the project root:
 
 ```env
-CLIPPINGS_ARENA_CHANNEL_ID="clippings"
+CLIPPINGS_ARENA_MAIN_CHANNEL_ID="clippings"
 ```
 
 You can find your channel slug in the URL of your Are.na channel (e.g. `are.na/myles/clippings` → `clippings`).

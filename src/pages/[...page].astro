@@ -11,7 +11,7 @@ import { getLiveCollection, getLiveEntry } from "astro:content";
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const { entries: blocks, error: blocksError } = await getLiveCollection(
     "blocks",
-    { channelId: config.ARENA_CHANNEL_ID },
+    { channelId: config.ARENA_MAIN_CHANNEL_ID },
   );
   if (!blocks) throw blocksError;
 
@@ -20,7 +20,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
 const { entry: channel, error: channelError } = await getLiveEntry(
   "channels",
-  config.ARENA_CHANNEL_ID,
+  config.ARENA_MAIN_CHANNEL_ID,
 );
 if (!channel) throw channelError;
 

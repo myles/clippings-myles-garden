@@ -8,7 +8,7 @@ import { getLiveCollection, getLiveEntry } from "astro:content";
 export async function getStaticPaths() {
   const { entries: blocks, error: blocksError } = await getLiveCollection(
     "blocks",
-    { channelId: config.ARENA_CHANNEL_ID },
+    { channelId: config.ARENA_MAIN_CHANNEL_ID },
   );
 
   if (!blocks) throw blocksError;
@@ -22,7 +22,7 @@ const { block } = Astro.props;
 
 const { entry: channel, error: channelError } = await getLiveEntry(
   "channels",
-  config.ARENA_CHANNEL_ID,
+  config.ARENA_MAIN_CHANNEL_ID,
 );
 if (!channel) throw channelError;
 ---

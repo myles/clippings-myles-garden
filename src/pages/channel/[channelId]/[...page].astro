@@ -1,0 +1,75 @@
+---
+import BlockList from "@/components/blocks/list/BlockList.astro";
+import BlockListItem from "@/components/blocks/list/BlockListItem.astro";
+import type { FeedLink } from "@/components/layout/Head.astro";
+import Pagination from "@/components/ui/Pagination.astro";
+import config from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import urls from "@/lib/urls";
+import type { GetStaticPathsOptions } from "astro";
+import { getLiveCollection, getLiveEntry } from "astro:content";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const channelIds = [
+    config.ARENA_MAIN_CHANNEL_ID,
+    ...config.ARENA_OTHER_CHANNEL_IDS,
+  ];
+
+  const paths = await Promise.all(
+    channelIds.map(async (channelId) => {
+      const isMainChannel = config.ARENA_MAIN_CHANNEL_ID === channelId;
+
+      const { entry: channel, error: channelError } = await getLiveEntry(
+        "channels",
+        channelId,
+      );
+      const { entries: blocks, error: blocksError } = await getLiveCollection(
+        "blocks",
+        { channelId: channelId },
+      );
+
+      if (!channel) throw channelError;
+      if (!blocks) throw blocksError;
+
+      return paginate(blocks, {
+        params: { channelId },
+        props: { channel, isMainChannel, channelError, blocksError },
+        pageSize: config.PAGE_SIZE,
+      });
+    }),
+  );
+
+  return paths.flat();
+}
+
+const { page, channel, isMainChannel } = Astro.props;
+
+const addtionalFeedLinks: FeedLink[] = !isMainChannel
+  ? [
+      {
+        title: `${channel.data.title} JSON Feed`,
+        type: "application/feed+json",
+        url: new URL(urls.channel.feed(channel.id, "json"), Astro.site),
+      },
+      {
+        title: `${channel.data.title} RSS Feed`,
+        type: "application/rss+xml",
+        url: new URL(urls.channel.feed(channel.id, "rss"), Astro.site),
+      },
+    ]
+  : [];
+---
+
+<Layout
+  siteTitle={channel.data.title}
+  siteDescription={channel.data.description?.plain}
+  siteDescriptionHtml={channel.data.description?.html}
+  arenaChannelUrl={urls.external.channel(channel.data.slug)}
+  canonicalUrl={isMainChannel ? urls.index() : undefined}
+  feedLinks={addtionalFeedLinks}
+>
+  <BlockList>
+    {page.data.map((block) => <BlockListItem block={block} />)}
+  </BlockList>
+  <Pagination page={page} />
+</Layout>

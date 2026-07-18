@@ -11,13 +11,13 @@ export async function GET(context: APIContext) {
 
   const { entry: channel, error: channelError } = await getLiveEntry(
     "channels",
-    config.ARENA_CHANNEL_ID,
+    config.ARENA_MAIN_CHANNEL_ID,
   );
   if (!channel) throw channelError;
 
   const { entries: blocks, error: blocksError } = await getLiveCollection(
     "blocks",
-    { channelId: config.ARENA_CHANNEL_ID },
+    { channelId: config.ARENA_MAIN_CHANNEL_ID },
   );
   if (!blocks) throw blocksError;
 

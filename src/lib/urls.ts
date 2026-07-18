@@ -1,8 +1,14 @@
 export default {
   index: () => `/`,
+  feed: (type: "json" | "rss" = "json") => `/channel/feed.${type}`,
 
   block: {
     detail: (blockId: string | number) => `/block/${blockId}`,
+  },
+  channel: {
+    list: () => `/channels`,
+    detail: (channelId: string) => `/channel/${channelId}`,
+    feed: (channelId: string, type: "json" | "rss" = "json") => `/channel/${channelId}/feed.${type}`,
   },
 
   external: {

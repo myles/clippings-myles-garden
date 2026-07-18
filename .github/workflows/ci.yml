@@ -8,7 +8,7 @@ on:
 
 env:
   CLIPPINGS_ARENA_API_KEY: "i-am-an-arena-api-key"
-  CLIPPINGS_ARENA_CHANNEL_ID: "i-am-an-arena-channel-id"
+  CLIPPINGS_ARENA_MAIN_CHANNEL_ID: "i-am-an-arena-channel-id"
 
 jobs:
   ci:

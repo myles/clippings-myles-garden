@@ -1,5 +1,12 @@
 ---
 import config from "@/config";
+import urls from "@/lib/urls";
+
+export type FeedLink = {
+  title?: string;
+  type: "application/feed+json" | "application/rss+xml";
+  url: URL;
+};
 
 export type Props = {
   title?: string;
@@ -8,6 +15,7 @@ export type Props = {
   siteDescription?: string;
   canonicalUrl?: string;
   structuredData?: unknown;
+  feedLinks?: FeedLink[];
 };
 const {
   title,
@@ -16,11 +24,26 @@ const {
   siteDescription,
   canonicalUrl: incomingCanonicalUrl,
   structuredData,
+  feedLinks: incomingFeedLinks = [],
 } = Astro.props;
 
 const canonicalUrl = incomingCanonicalUrl
   ? incomingCanonicalUrl
   : new URL(Astro.url.pathname, Astro.site);
+
+const feedLinks: FeedLink[] = [
+  {
+    title: `${siteTitle} JSON Feed`,
+    type: "application/feed+json",
+    url: new URL(urls.feed("json"), Astro.site),
+  },
+  {
+    title: `${siteTitle} RSS Feed`,
+    type: "application/rss+xml",
+    url: new URL(urls.feed("rss"), Astro.site),
+  },
+  ...incomingFeedLinks,
+];
 ---
 
 <head>
@@ -42,18 +65,11 @@ const canonicalUrl = incomingCanonicalUrl
   <link rel="sitemap" href={new URL("/sitemap-index.xml", Astro.site).href} />
 
   {/* Feeds */}
-  <link
-    rel="alternate"
-    title={`${siteTitle} JSON Feed`}
-    type="application/feed+json"
-    href={new URL("/feed.json", Astro.site).href}
-  />
-  <link
-    rel="alternate"
-    title={`${siteTitle} RSS Feed`}
-    type="application/rss+xml"
-    href={new URL("/feed.xml", Astro.site).href}
-  />
+  {
+    feedLinks.map(({ title, type, url }) => (
+      <link rel="alternate" title={title} type={type} href={url.toString()} />
+    ))
+  }
 
   {/* IndieAuth Tags */}
   <link rel="authorization_endpoint" href="https://indieauth.com/auth" />
