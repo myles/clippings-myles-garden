@@ -10,15 +10,10 @@ import type { GetStaticPathsOptions } from "astro";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const channelIds = [
-    config.ARENA_MAIN_CHANNEL_ID,
-    ...config.ARENA_OTHER_CHANNEL_IDS,
-  ];
+  const channelIds = [config.ARENA_MAIN_CHANNEL_ID];
 
   const paths = await Promise.all(
     channelIds.map(async (channelId) => {
-      const isMainChannel = config.ARENA_MAIN_CHANNEL_ID === channelId;
-
       const { entry: channel, error: channelError } = await getLiveEntry(
         "channels",
         channelId,
@@ -33,31 +28,28 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
       return paginate(blocks, {
         params: { channelId },
-        props: { channel, isMainChannel, channelError, blocksError },
+        props: { channel, channelError, blocksError },
         pageSize: config.PAGE_SIZE,
       });
     }),
   );
-
   return paths.flat();
 }
 
-const { page, channel, isMainChannel } = Astro.props;
+const { page, channel } = Astro.props;
 
-const addtionalFeedLinks: FeedLink[] = !isMainChannel
-  ? [
-      {
-        title: `${channel.data.title} JSON Feed`,
-        type: "application/feed+json",
-        url: new URL(urls.channel.feed(channel.id, "json"), Astro.site),
-      },
-      {
-        title: `${channel.data.title} RSS Feed`,
-        type: "application/rss+xml",
-        url: new URL(urls.channel.feed(channel.id, "rss"), Astro.site),
-      },
-    ]
-  : [];
+const addtionalFeedLinks: FeedLink[] = [
+  {
+    title: `${channel.data.title} JSON Feed`,
+    type: "application/feed+json",
+    url: new URL(urls.channel.feed(channel.id, "json"), Astro.site),
+  },
+  {
+    title: `${channel.data.title} RSS Feed`,
+    type: "application/rss+xml",
+    url: new URL(urls.channel.feed(channel.id, "rss"), Astro.site),
+  },
+];
 ---
 
 <Layout
@@ -65,7 +57,6 @@ const addtionalFeedLinks: FeedLink[] = !isMainChannel
   siteDescription={channel.data.description?.plain}
   siteDescriptionHtml={channel.data.description?.html}
   arenaChannelUrl={urls.external.channel(channel.data.slug)}
-  canonicalUrl={isMainChannel ? urls.index() : undefined}
   feedLinks={addtionalFeedLinks}
 >
   <BlockList>
