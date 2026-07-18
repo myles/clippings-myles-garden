@@ -8,7 +8,8 @@ export default {
   channel: {
     list: () => `/channels`,
     detail: (channelId: string) => `/channel/${channelId}`,
-    feed: (channelId: string, type: "json" | "rss" = "json") => `/channel/${channelId}/feed.${type}`,
+    feed: (channelId: string, type: "json" | "rss" = "json") =>
+      `/channel/${channelId}/feed.${type}`,
   },
 
   external: {

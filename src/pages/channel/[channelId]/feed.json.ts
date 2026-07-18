@@ -2,15 +2,22 @@ import config from "@/config";
 import { sortBlocksByCreatedAt } from "@/lib/content";
 import { formatBlockToFeedJsonItem, formatChannelToFeedJson } from "@/lib/feed";
 import type { Block, Channel } from "@/lib/schemas";
-import type { APIContext, LiveDataCollection, LiveDataCollectionResult, LiveDataEntry, LiveDataEntryResult } from "astro";
+import type { APIContext } from "astro";
 import jsonFeed from "astro-jsonfeed";
 import type { LiveCollectionError } from "astro/content/runtime";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 
 type APIParams = { channelId: string };
-type APIProps = { channel: Channel, blocks: Block[], channelError: Error | LiveCollectionError, blocksError: Error | LiveCollectionError };
+type APIProps = {
+  channel: Channel;
+  blocks: Block[];
+  channelError: Error | LiveCollectionError;
+  blocksError: Error | LiveCollectionError;
+};
 
-export async function GET(context: APIContext<APIProps, APIParams>): Promise<Response> {
+export async function GET(
+  context: APIContext<APIProps, APIParams>,
+): Promise<Response> {
   const { site } = context;
   if (!site) return new Response("Site not found", { status: 404 });
 
@@ -45,13 +52,14 @@ export async function getStaticPaths() {
       );
 
       return {
-        params: {channelId},
+        params: { channelId },
         props: {
-        channel,
-        blocks,
-        channelError,
-        blocksError,}
-      }
+          channel,
+          blocks,
+          channelError,
+          blocksError,
+        },
+      };
     }),
   );
   return paths.flat();
