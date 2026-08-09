@@ -1,4 +1,5 @@
 import type { LiveLoader } from "astro/loaders";
+import { fetchArenaJson } from "./arena-client";
 import type { ArenaChannel } from "./channel-loader.types";
 
 type EntryFilter = {
@@ -22,21 +23,21 @@ export function channelLoader(config: {
       const { id: channelId } = filter;
 
       try {
-        const response = await fetch(
+        const data = await fetchArenaJson<ArenaChannel>(
           `https://api.are.na/v3/channels/${channelId}`,
-          { headers: [["Authorization", `Bearer ${config?.apiKey}`]] },
+          { apiKey: config?.apiKey },
         );
-        const data = await response.json();
+        const html = data.description?.html;
         return {
-          id: data.id,
+          id: data.id.toString(),
           data: data,
-          rendered: {
-            html: data.description?.html,
-          },
+          rendered: html ? { html } : undefined,
         };
       } catch (error) {
         return {
-          error: new Error("Failed to load the Arena Channel."),
+          error: new Error("Failed to load the Arena Channel.", {
+            cause: error,
+          }),
         };
       }
     },

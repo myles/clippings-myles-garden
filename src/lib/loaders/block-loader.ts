@@ -1,5 +1,7 @@
 import type { LiveLoader } from "astro/loaders";
+import { fetchArenaJson } from "./arena-client";
 import type { ArenaBlock } from "./block-loader.types";
+import type { ArenaListAPIResponse } from "./types";
 
 type EntryFilter = {
   id: string;
@@ -24,20 +26,16 @@ export function blockLoader(config: {
       url.searchParams.set("per", per.toString());
 
       try {
-        const results = [];
+        const results: ArenaBlock[] = [];
 
         let nextPageNum: number | null = 1;
         while (nextPageNum) {
-          url.searchParams.set(
-            "page",
-            nextPageNum ? nextPageNum.toString() : "",
+          url.searchParams.set("page", nextPageNum.toString());
+
+          const result = await fetchArenaJson<ArenaListAPIResponse<ArenaBlock>>(
+            url,
+            { apiKey: config?.apiKey },
           );
-
-          const response = await fetch(url, {
-            headers: [["Authorization", `Bearer ${config?.apiKey}`]],
-          });
-
-          const result = await response.json();
           results.push(...result.data);
           nextPageNum = result.meta.next_page;
         }
@@ -67,17 +65,15 @@ export function blockLoader(config: {
       const { id: blockId } = filter;
 
       try {
-        const response = await fetch(
+        const data = await fetchArenaJson<ArenaBlock>(
           `https://api.are.na/v3/blocks/${blockId}`,
-          { headers: [["Authorization", `Bearer ${config?.apiKey}`]] },
+          { apiKey: config?.apiKey },
         );
-        const data = await response.json();
+        const html = data.description?.html;
         return {
           id: data.id.toString(),
           data: data,
-          rendered: {
-            html: data.description?.html,
-          },
+          rendered: html ? { html } : undefined,
         };
       } catch (error) {
         return {
