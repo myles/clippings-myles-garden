@@ -12,13 +12,13 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.9",
+    "@astrojs/check": "^0.9.10",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/vercel": "^11.0.3",
+    "@astrojs/vercel": "^11.0.5",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.1.1",
+    "astro": "^7.2.0",
     "astro-jsonfeed": "^1.0.3",
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
@@ -28,9 +28,10 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
+    "@mylesb/prettier-config": "^1.1.0",
     "@types/node": "^26.1.1",
     "@types/sanitize-html": "^2.16.1",
-    "prettier": "^3.9.5",
+    "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-astro-organize-imports": "^0.4.12",
     "prettier-plugin-organize-imports": "^4.3.0",
