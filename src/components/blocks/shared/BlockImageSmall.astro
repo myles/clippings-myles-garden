@@ -1,6 +1,6 @@
 ---
 import type { ImageSchema } from "@/lib/schemas";
-import { Picture } from "astro:assets";
+import { Image } from "astro:assets";
 
 type Props = {
   image: ImageSchema;
@@ -14,14 +14,13 @@ const width = image.square.width ?? 768;
 const height = image.square.height ?? 768;
 ---
 
-<Picture
+<Image
   src={image.src}
   alt={image.alt_text ?? ""}
   width={width}
   height={height}
-  widths={[384, 768, 1536]}
-  sizes={`(max-width: 1536px) 384px, 768px, 1536px, 100vh`}
-  formats={["avif", "webp"]}
+  widths={[384, 768]}
+  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+  quality={75}
   class:list={["w-full h-full object-contain", className]}
-  pictureAttributes={{ class: "contents" }}
 />
