@@ -2,11 +2,12 @@
 import BlockDetail from "@/components/blocks/detail/BlockDetail.astro";
 import config from "@/config";
 import Layout from "@/layouts/Layout.astro";
+import type { Block } from "@/lib/schemas";
 import urls from "@/lib/urls";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 
 export async function getStaticPaths() {
-  const blocks = [];
+  const blocks: Block[] = [];
   const blockErrors = [];
 
   const { entries: mainChannelBlocks, error: mainChannelError } =
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
     });
 
   if (mainChannelError) blockErrors.push(mainChannelError);
-  blocks.push(...mainChannelBlocks);
+  if (mainChannelBlocks) blocks.push(...mainChannelBlocks);
 
   await Promise.all(
     config.ARENA_OTHER_CHANNEL_IDS.map(async (channelId) => {
@@ -24,7 +25,7 @@ export async function getStaticPaths() {
           channelId,
         });
       if (otherChannelError) blockErrors.push(otherChannelError);
-      blocks.push(...otherChannelBlocks);
+      if (otherChannelBlocks) blocks.push(...otherChannelBlocks);
     }),
   );
 
