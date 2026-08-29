@@ -6,12 +6,29 @@ import urls from "@/lib/urls";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 
 export async function getStaticPaths() {
-  const { entries: blocks, error: blocksError } = await getLiveCollection(
-    "blocks",
-    { channelId: config.ARENA_MAIN_CHANNEL_ID },
+  const blocks = [];
+  const blockErrors = [];
+
+  const { entries: mainChannelBlocks, error: mainChannelError } =
+    await getLiveCollection("blocks", {
+      channelId: config.ARENA_MAIN_CHANNEL_ID,
+    });
+
+  if (mainChannelError) blockErrors.push(mainChannelError);
+  blocks.push(...mainChannelBlocks);
+
+  await Promise.all(
+    config.ARENA_OTHER_CHANNEL_IDS.map(async (channelId) => {
+      const { entries: otherChannelBlocks, error: otherChannelError } =
+        await getLiveCollection("blocks", {
+          channelId,
+        });
+      if (otherChannelError) blockErrors.push(otherChannelError);
+      blocks.push(...otherChannelBlocks);
+    }),
   );
 
-  if (!blocks) throw blocksError;
+  if (blockErrors.length) throw blockErrors;
 
   return blocks.map((block) => ({
     params: { blockId: block.id.toString() },

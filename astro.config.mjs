@@ -22,6 +22,7 @@ export default defineConfig({
   },
   redirects: {
     "/block": "/",
+    "/channel": "/",
   },
   integrations: [sitemap()],
   vite: {

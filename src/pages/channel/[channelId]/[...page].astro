@@ -10,10 +10,8 @@ import type { GetStaticPathsOptions } from "astro";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const channelIds = [config.ARENA_MAIN_CHANNEL_ID];
-
   const paths = await Promise.all(
-    channelIds.map(async (channelId) => {
+    config.ARENA_OTHER_CHANNEL_IDS.map(async (channelId) => {
       const { entry: channel, error: channelError } = await getLiveEntry(
         "channels",
         channelId,
