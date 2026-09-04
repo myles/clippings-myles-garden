@@ -57,7 +57,7 @@ const addtionalFeedLinks: FeedLink[] = [
   arenaChannelUrl={urls.external.channel(channel.data.slug)}
   feedLinks={addtionalFeedLinks}
 >
-  <BlockList>
+  <BlockList feedName={channel.data.title}>
     {page.data.map((block) => <BlockListItem block={block} />)}
   </BlockList>
   <Pagination page={page} />

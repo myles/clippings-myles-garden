@@ -9,6 +9,11 @@ const { block, class: className } = Astro.props;
 ---
 
 <div
-  class:list={["block-detail-text", "prose max-w-none! size-full", className]}
+  class:list={[
+    "e-content",
+    "block-detail-text",
+    "prose max-w-none! size-full",
+    className,
+  ]}
   set:html={block.data.content.html}
 />

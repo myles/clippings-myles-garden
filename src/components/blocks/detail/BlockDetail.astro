@@ -28,6 +28,8 @@ type Props = {
 };
 const { block, class: className } = Astro.props;
 
+const blockUrl = new URL(urls.block.detail(block.id), Astro.site).href;
+
 let blockTitle: string | null = block.data.title;
 
 let ComponentDetail;
@@ -64,16 +66,19 @@ switch (true) {
 
 <article
   class:list={[
+    "h-entry",
     "block-detail-image",
-    "grid grid-cols-1 gap-8 flex-1 h-full",
+    "grid grid-cols-1 gap-8 flex-1 full-height",
     "md:grid-cols-3",
     className,
   ]}
 >
   <div class:list={["order-2 space-y-4"]}>
     <header class:list={["space-y-2"]}>
+      <data class:list={["u-url", "u-uid"]} value={blockUrl} hidden></data>
       <h2
         class:list={[
+          blockTitle && "p-name",
           "font-bold text-xl leading-snug truncate",
           !blockTitle &&
             "text-slate-300 selection:text-slate-50 selection:bg-slate-950",
@@ -84,7 +89,7 @@ switch (true) {
       {
         block.data.description ? (
           <div
-            class:list={["text-lg overflow-y-scroll"]}
+            class:list={["p-summary", "text-lg overflow-y-scroll"]}
             set:html={block.data.description.html}
           />
         ) : (
@@ -101,7 +106,10 @@ switch (true) {
     <section>
       <BlockDetailMetaDataList>
         <BlockDetailMetaDataListItem name="Added">
-          <time datetime={formatISO(block.data.created_at)}>
+          <time
+            class:list={["dt-published"]}
+            datetime={formatISO(block.data.created_at)}
+          >
             {formatDate(block.data.created_at, "EEE do MMM yyyy")}
           </time>
         </BlockDetailMetaDataListItem>
@@ -109,6 +117,7 @@ switch (true) {
           "user" in block.data && block.data.user && (
             <BlockDetailMetaDataListItem name="By">
               <a
+                class:list={["p-author", "h-card"]}
                 href={urls.external.user(block.data.user.slug)}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -122,6 +131,7 @@ switch (true) {
           "source" in block.data && block.data.source && (
             <BlockDetailMetaDataListItem name="Source">
               <a
+                class:list={["u-bookmark-of"]}
                 href={block.data.source.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -134,6 +144,7 @@ switch (true) {
         {ComponentMetaData && <ComponentMetaData block={block as any} />}
         <BlockDetailMetaDataListItem name="External URL">
           View in <a
+            class:list={["u-syndication"]}
             href={urls.external.block(block.id)}
             target="_blank"
             rel="noopener noreferrer">Are.na</a

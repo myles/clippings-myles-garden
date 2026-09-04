@@ -34,12 +34,13 @@ const cleanedHtml = sanitizeHtml(block.data.content.html, {
 <div
   class:list={[
     "block-list-item-text",
-    "h-full overflow-hidden bg-linear-to-t/decreasing from-0% to-20% from-gray-300 to-transparent relative",
+    "full-height overflow-hidden bg-linear-to-t/decreasing from-0% to-20% from-gray-300 to-transparent relative",
     className,
   ]}
 >
   <div
     class:list={[
+      "e-content",
       "p-4 max-w-none!",
       "prose prose-sm prose-headings:text-sm prose-headings:mb-1 prose-p:mb-0.5",
     ]}

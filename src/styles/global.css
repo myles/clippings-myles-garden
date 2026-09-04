@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/*
+ * A few parsers read any `h-*` class as a microformat root.
+ */
+@utility full-height {
+  @apply h-full;
+}

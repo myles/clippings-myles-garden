@@ -1,18 +1,27 @@
 ---
 type Props = {
+  feedName?: string;
   class?: string[];
 };
-const { class: className } = Astro.props;
+const { feedName, class: className } = Astro.props;
 ---
 
-<ul
-  class:list={[
-    "grid grid-cols-1 gap-2",
-    "sm:grid-cols-2",
-    "md:grid-cols-3",
-    "lg:grid-cols-4",
-    className,
-  ]}
->
-  <slot />
-</ul>
+{
+  /* The h-feed root wraps rather than sits on the <ul>, because the feed's
+    `p-name` has to live inside the root and <ul> only accepts <li> children. */
+}
+<div class:list={["h-feed"]}>
+  {feedName && <h2 class:list={["p-name", "sr-only"]}>{feedName}</h2>}
+  <ul
+    class:list={[
+      "h-feed",
+      "grid grid-cols-1 gap-2",
+      "sm:grid-cols-2",
+      "md:grid-cols-3",
+      "lg:grid-cols-4",
+      className,
+    ]}
+  >
+    <slot />
+  </ul>
+</div>

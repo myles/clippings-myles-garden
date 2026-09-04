@@ -13,17 +13,22 @@ const {
   title,
   target,
   isExternal,
+  rel,
   class: className,
 } = Astro.props as Props;
 
 const Element = disabled ? "span" : "a";
+
+const relValues = [rel, isExternal ? "noopener noreferrer" : null].filter(
+  (value): value is string => Boolean(value),
+);
 ---
 
 <Element
   href={href}
   title={title}
   target={target || (isExternal ? "_blank" : null)}
-  rel={isExternal ? "noopener noreferrer" : null}
+  rel={relValues.length > 0 ? relValues.join(" ") : null}
   class:list={[
     "inline-block rounded border border-black/50 px-2 py-1",
     href && "hover:bg-black/5",

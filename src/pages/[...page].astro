@@ -33,7 +33,7 @@ const { page } = Astro.props;
   siteDescriptionHtml={channel.data.description?.html}
   arenaChannelUrl={urls.external.channel(channel.data.slug)}
 >
-  <BlockList>
+  <BlockList feedName={channel.data.title}>
     {page.data.map((block) => <BlockListItem block={block} />)}
   </BlockList>
   <Pagination page={page} />
