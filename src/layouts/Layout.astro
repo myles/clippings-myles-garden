@@ -18,6 +18,10 @@ const {
   siteTitle,
   siteDescription,
   siteDescriptionHtml,
+  canonicalUrl,
+  feedLinks,
+  jsonLd,
+  pageNavigation,
   arenaChannelUrl,
   class: className,
 } = Astro.props;
@@ -30,6 +34,10 @@ const {
     description={description}
     siteTitle={siteTitle}
     siteDescription={siteDescription}
+    canonicalUrl={canonicalUrl}
+    feedLinks={feedLinks}
+    jsonLd={jsonLd}
+    pageNavigation={pageNavigation}
   />
 
   <body id="clippings-myles-garden" class:list={[className]}>
