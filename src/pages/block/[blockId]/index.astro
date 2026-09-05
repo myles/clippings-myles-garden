@@ -2,6 +2,7 @@
 import BlockDetail from "@/components/blocks/detail/BlockDetail.astro";
 import config from "@/config";
 import Layout from "@/layouts/Layout.astro";
+import { formatBlockToJsonLd, formatSiteToJsonLd } from "@/lib/json-ld";
 import type { Block } from "@/lib/schemas";
 import urls from "@/lib/urls";
 import { getLiveCollection, getLiveEntry } from "astro:content";
@@ -43,6 +44,11 @@ const { entry: channel, error: channelError } = await getLiveEntry(
   config.ARENA_MAIN_CHANNEL_ID,
 );
 if (!channel) throw channelError;
+
+const jsonLd = [
+  formatSiteToJsonLd(channel, Astro.site),
+  formatBlockToJsonLd(block, Astro.site),
+];
 ---
 
 <Layout
@@ -52,6 +58,7 @@ if (!channel) throw channelError;
   siteDescription={channel.data.description?.plain}
   siteDescriptionHtml={channel.data.description?.html}
   arenaChannelUrl={urls.external.channel(channel.data.slug)}
+  jsonLd={jsonLd}
 >
   <BlockDetail block={block} />
 </Layout>

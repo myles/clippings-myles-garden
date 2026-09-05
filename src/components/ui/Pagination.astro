@@ -32,7 +32,11 @@ const isLastPage = page.end + 1 === page.total;
       >{" "}results.
     </p>
     <nav aria-label="Pagination" class:list={["isolate inline-flex space-x-4"]}>
-      <ButtonLink href={page.url.prev} disabled={!page.url.prev}>
+      <ButtonLink
+        href={page.url.prev}
+        rel={page.url.prev ? "prev" : undefined}
+        disabled={!page.url.prev}
+      >
         {
           isFirstPage ? (
             <span aria-label="Previous page">&LeftArrowBar;</span>
@@ -42,7 +46,11 @@ const isLastPage = page.end + 1 === page.total;
         }
         Previous
       </ButtonLink>
-      <ButtonLink href={page.url.next} disabled={!page.url.next}>
+      <ButtonLink
+        href={page.url.next}
+        rel={page.url.next ? "next" : undefined}
+        disabled={!page.url.next}
+      >
         Next
         {
           isLastPage ? (

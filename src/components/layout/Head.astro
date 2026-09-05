@@ -1,6 +1,8 @@
 ---
 import config from "@/config";
 import urls from "@/lib/urls";
+import type { Page } from "astro";
+import type { Graph, Thing } from "schema-dts";
 
 export type FeedLink = {
   title?: string;
@@ -14,8 +16,9 @@ export type Props = {
   siteTitle: string;
   siteDescription?: string;
   canonicalUrl?: string;
-  structuredData?: unknown;
   feedLinks?: FeedLink[];
+  jsonLd?: Thing[];
+  pageNavigation?: Page["url"];
 };
 const {
   title,
@@ -23,8 +26,9 @@ const {
   siteTitle,
   siteDescription,
   canonicalUrl: incomingCanonicalUrl,
-  structuredData,
   feedLinks: incomingFeedLinks = [],
+  jsonLd: incomingJsonLd = [],
+  pageNavigation,
 } = Astro.props;
 
 const canonicalUrl = incomingCanonicalUrl
@@ -44,6 +48,14 @@ const feedLinks: FeedLink[] = [
   },
   ...incomingFeedLinks,
 ];
+
+const jsonLd: Graph | null =
+  incomingJsonLd.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@graph": [...incomingJsonLd],
+      }
+    : null;
 ---
 
 <head>
@@ -75,6 +87,7 @@ const feedLinks: FeedLink[] = [
   <link rel="authorization_endpoint" href="https://indieauth.com/auth" />
   <link rel="token_endpoint" href="https://tokens.indieauth.com/token" />
 
+  <link rel="author" href="https://myles.garden" />
   <link rel="me" href="mailto:myles@myles.garden" />
 
   <link rel="me" href="https://myles.garden" />
@@ -112,13 +125,25 @@ const feedLinks: FeedLink[] = [
   <meta name="twitter:title" content={siteTitle} />
   <meta name="twitter:description" content={siteDescription} />
 
+  {/* Page Navigation */}
+  {
+    pageNavigation && pageNavigation.next && (
+      <link rel="next" href={new URL(pageNavigation.next, canonicalUrl)} />
+    )
+  }
+  {
+    pageNavigation && pageNavigation.prev && (
+      <link rel="prev" href={new URL(pageNavigation.prev, canonicalUrl)} />
+    )
+  }
+
   {/* JSON-LD Structured Data */}
   {
-    structuredData && (
+    jsonLd && (
       <script
         is:inline
         type="application/ld+json"
-        set:html={JSON.stringify(structuredData)}
+        set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
       />
     )
   }

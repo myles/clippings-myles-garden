@@ -5,11 +5,18 @@ import type { FeedLink } from "@/components/layout/Head.astro";
 import Pagination from "@/components/ui/Pagination.astro";
 import config from "@/config";
 import Layout from "@/layouts/Layout.astro";
+import { formatChannelToJsonLd, formatSiteToJsonLd } from "@/lib/json-ld";
 import urls from "@/lib/urls";
 import type { GetStaticPathsOptions } from "astro";
 import { getLiveCollection, getLiveEntry } from "astro:content";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const { entry: mainChannel, error: mainChannelError } = await getLiveEntry(
+    "channels",
+    config.ARENA_MAIN_CHANNEL_ID,
+  );
+  if (!mainChannel) throw mainChannelError;
+
   const paths = await Promise.all(
     config.ARENA_OTHER_CHANNEL_IDS.map(async (channelId) => {
       const { entry: channel, error: channelError } = await getLiveEntry(
@@ -26,7 +33,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
       return paginate(blocks, {
         params: { channelId },
-        props: { channel, channelError, blocksError },
+        props: { channel, mainChannel },
         pageSize: config.PAGE_SIZE,
       });
     }),
@@ -34,7 +41,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   return paths.flat();
 }
 
-const { page, channel } = Astro.props;
+const { page, channel, mainChannel } = Astro.props;
 
 const addtionalFeedLinks: FeedLink[] = [
   {
@@ -48,6 +55,11 @@ const addtionalFeedLinks: FeedLink[] = [
     url: new URL(urls.channel.feed(channel.id, "rss"), Astro.site),
   },
 ];
+
+const jsonLd = [
+  formatSiteToJsonLd(mainChannel, Astro.site),
+  formatChannelToJsonLd(channel, page, Astro.site),
+];
 ---
 
 <Layout
@@ -56,8 +68,10 @@ const addtionalFeedLinks: FeedLink[] = [
   siteDescriptionHtml={channel.data.description?.html}
   arenaChannelUrl={urls.external.channel(channel.data.slug)}
   feedLinks={addtionalFeedLinks}
+  jsonLd={jsonLd}
+  pageNavigation={page.url}
 >
-  <BlockList>
+  <BlockList feedName={channel.data.title}>
     {page.data.map((block) => <BlockListItem block={block} />)}
   </BlockList>
   <Pagination page={page} />

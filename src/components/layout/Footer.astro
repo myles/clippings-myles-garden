@@ -12,10 +12,14 @@ const { class: className } = Astro.props;
       "[&_a]:underline [&_a]:decoration-2 [&_a]:decoration-red-500 [&_a]:hover:text-red-600",
     ]}
   >
-    made with <span class:list={["heart"]}>&#9829;</span> by <a
-      href="https://myles.garden"
-      target="_blank"
-      rel="noopener noreferrer">myles</a
+    made with <span class:list={["heart"]}>&#9829;</span> by <span
+      class:list={["h-card"]}
+      ><a
+        class:list={["p-name", "u-url", "u-uid"]}
+        href="https://myles.garden"
+        target="_blank"
+        rel="noopener noreferrer">myles</a
+      ></span
     >. built on{" "}
     <a href="https://astro.build" target="_blank" rel="noopener noreferrer"
       >astro</a

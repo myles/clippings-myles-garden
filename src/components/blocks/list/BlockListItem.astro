@@ -9,6 +9,7 @@ import {
 } from "@/lib/content";
 import type { Block } from "@/lib/schemas";
 import urls from "@/lib/urls";
+import { formatISO } from "date-fns";
 import BlockListItemAttachment from "./BlockListItemAttachment.astro";
 import BlockListItemChannel from "./BlockListItemChannel.astro";
 import BlockListItemEmbed from "./BlockListItemEmbed.astro";
@@ -24,12 +25,18 @@ type Props = {
 const { block, useExternalLink = false, class: className } = Astro.props;
 
 let Component;
+
+// Channel blocks print their own title, so they carry the h-entry's `p-name`.
+// Every other type renders as a bare image and needs one supplied here.
+let rendersTitle = false;
+
 switch (true) {
   case isAttachmentBlock(block):
     Component = BlockListItemAttachment;
     break;
   case isChannelBlock(block):
     Component = BlockListItemChannel;
+    rendersTitle = true;
     break;
   case isEmbedBlock(block):
     Component = BlockListItemEmbed;
@@ -50,7 +57,7 @@ switch (true) {
 }
 ---
 
-<li class:list={["block-list-item", className]}>
+<li class:list={["h-entry", "block-list-item", className]}>
   <a
     href={useExternalLink
       ? urls.external.block(block.id)
@@ -58,10 +65,20 @@ switch (true) {
     target={useExternalLink ? "_blank" : undefined}
     rel={useExternalLink ? "noopener noreferrer" : undefined}
     class:list={[
+      "u-url",
       "size-full aspect-square flex justify-center items-center bg-slate-50 border border-slate-100",
       "hover:bg-slate-100",
     ]}
   >
+    {
+      !rendersTitle && block.data.title && (
+        <span class:list={["p-name", "sr-only"]}>{block.data.title}</span>
+      )
+    }
     {Component && <Component block={block as any} />}
   </a>
+  <time
+    class:list={["dt-published"]}
+    datetime={formatISO(block.data.created_at)}
+    hidden></time>
 </li>
