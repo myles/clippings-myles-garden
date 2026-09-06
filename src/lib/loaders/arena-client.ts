@@ -1,66 +1,59 @@
-import type { FetchArenaOptions } from "./arena-client.types";
+import { createArena, type Block, type Channel } from "@aredotna/sdk";
+import type { ArenaClient, ArenaClientOptions } from "./arena-client.types";
 
-const jsonCache = new Map<string, Promise<unknown>>();
+const DEFAULT_MAX_RETRIES = 4;
 
-const MAX_RETRY_DELAY_MS = 30_000;
+const requestCache = new Map<string, Promise<unknown>>();
 
 /**
- * Fetch JSON from the Are.na API with build-scoped caching and retry/backoff.
+ * Are.na SDK wrapper adding build-scoped caching, so the same channel or
+ * block is only fetched once per build no matter how many pages ask for it.
  */
-export function fetchArenaJson<T>(
-  url: string | URL,
-  { apiKey, maxRetries = 4 }: FetchArenaOptions,
-): Promise<T> {
-  const key = url.toString();
+export function createArenaClient({
+  apiKey,
+  maxRetries = DEFAULT_MAX_RETRIES,
+}: ArenaClientOptions): ArenaClient {
+  const arena = createArena({
+    token: apiKey,
+    retry: { respectRateLimits: true, maxRetries },
+  });
 
-  const cached = jsonCache.get(key);
-  if (cached) return cached as Promise<T>;
-
-  const request = requestWithRetry(key, apiKey, maxRetries);
-  jsonCache.set(key, request);
-  // Don't cache failures: evict so a later caller starts fresh.
-  request.catch(() => jsonCache.delete(key));
-
-  return request as Promise<T>;
-}
-
-async function requestWithRetry(
-  url: string,
-  apiKey: string | undefined,
-  maxRetries: number,
-): Promise<unknown> {
-  for (let attempt = 0; ; attempt++) {
-    const response = await fetch(url, {
-      headers: [["Authorization", `Bearer ${apiKey}`]],
-    });
-
-    if (response.ok) return response.json();
-
-    const retryable = response.status === 429 || response.status >= 500;
-    if (!retryable || attempt >= maxRetries) {
-      throw new Error(
-        `Are.na request failed: ${response.status} ${response.statusText} (${url})`,
+  return {
+    getChannel: (channelId) => {
+      return cached(`channel:${channelId}`, () =>
+        arena.channels.get(channelId),
       );
-    }
+    },
 
-    await sleep(retryDelayMs(response, attempt));
-  }
+    getBlock: (blockId) => {
+      return cached(`block:${blockId}`, () => arena.blocks.get(blockId));
+    },
+
+    getChannelContents: (channelId, per) => {
+      return cached(`contents:${channelId}:${per}`, async () => {
+        const contents: (Block | Channel)[] = [];
+        const pages = arena.channels.paginateContents(channelId, { per });
+
+        for await (const page of pages) {
+          contents.push(...page.data);
+        }
+
+        return contents;
+      });
+    },
+  };
 }
 
-function retryDelayMs(response: Response, attempt: number): number {
-  const retryAfter = response.headers.get("retry-after");
-  if (retryAfter) {
-    const seconds = Number(retryAfter);
-    if (!Number.isNaN(seconds)) {
-      return Math.min(seconds * 1000, MAX_RETRY_DELAY_MS);
-    }
+function cached<T>(key: string, request: () => Promise<T>): Promise<T> {
+  const hit = requestCache.get(key);
+  if (hit) {
+    return hit as Promise<T>;
   }
 
-  // Exponential backoff (0.5s, 1s, 2s, 4s ...) with jitter, capped.
-  const base = Math.min(500 * 2 ** attempt, MAX_RETRY_DELAY_MS);
-  return base + Math.random() * 250;
-}
+  const pending = request();
+  requestCache.set(key, pending);
+  // Don't cache failures: evict so a later caller starts fresh.
+  pending.catch(() => requestCache.delete(key));
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return pending;
 }

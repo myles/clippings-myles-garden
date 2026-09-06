@@ -1,6 +1,6 @@
+import type { Channel } from "@aredotna/sdk";
 import type { LiveLoader } from "astro/loaders";
-import { fetchArenaJson } from "./arena-client";
-import type { ArenaChannel } from "./channel-loader.types";
+import { createArenaClient } from "./arena-client";
 
 type EntryFilter = {
   id: string;
@@ -10,7 +10,9 @@ type CollectionFilter = {};
 
 export function channelLoader(config: {
   apiKey?: string;
-}): LiveLoader<ArenaChannel, EntryFilter, CollectionFilter> {
+}): LiveLoader<Channel, EntryFilter, CollectionFilter> {
+  const arena = createArenaClient({ apiKey: config?.apiKey });
+
   return {
     name: "arena-channel-loader",
     loadCollection: async () => {
@@ -23,10 +25,7 @@ export function channelLoader(config: {
       const { id: channelId } = filter;
 
       try {
-        const data = await fetchArenaJson<ArenaChannel>(
-          `https://api.are.na/v3/channels/${channelId}`,
-          { apiKey: config?.apiKey },
-        );
+        const data = await arena.getChannel(channelId);
         const html = data.description?.html;
         return {
           id: data.id.toString(),

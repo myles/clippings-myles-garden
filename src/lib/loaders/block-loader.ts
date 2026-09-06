@@ -1,7 +1,11 @@
+import type { Block, Channel } from "@aredotna/sdk";
 import type { LiveLoader } from "astro/loaders";
-import { fetchArenaJson } from "./arena-client";
-import type { ArenaBlock } from "./block-loader.types";
-import type { ArenaListAPIResponse } from "./types";
+import { createArenaClient } from "./arena-client";
+
+// Are.na channel contents mix blocks with nested channels.
+type Connectable = Block | Channel;
+
+const MAX_PER_PAGE = 100;
 
 type EntryFilter = {
   id: string;
@@ -14,34 +18,25 @@ type CollectionFilter = {
 
 export function blockLoader(config: {
   apiKey?: string;
-}): LiveLoader<ArenaBlock, EntryFilter, CollectionFilter> {
+}): LiveLoader<Connectable, EntryFilter, CollectionFilter> {
+  const arena = createArenaClient({ apiKey: config?.apiKey });
+
   return {
     name: "arena-block-loader",
     loadCollection: async ({ filter }) => {
-      const { channelId, per = 100 } = filter ?? {};
-      const url = new URL(
-        `/v3/channels/${channelId}/contents`,
-        "https://api.are.na",
-      );
-      url.searchParams.set("per", per.toString());
+      const { channelId, per = MAX_PER_PAGE } = filter ?? {};
+
+      if (!channelId) {
+        return {
+          error: new Error("Failed to load the Arena blocks: no channelId."),
+        };
+      }
 
       try {
-        const results: ArenaBlock[] = [];
-
-        let nextPageNum: number | null = 1;
-        while (nextPageNum) {
-          url.searchParams.set("page", nextPageNum.toString());
-
-          const result = await fetchArenaJson<ArenaListAPIResponse<ArenaBlock>>(
-            url,
-            { apiKey: config?.apiKey },
-          );
-          results.push(...result.data);
-          nextPageNum = result.meta.next_page;
-        }
+        const results = await arena.getChannelContents(channelId, per);
 
         return {
-          entries: results.map((block: ArenaBlock) => {
+          entries: results.map((block: Connectable) => {
             const html =
               "content" in block
                 ? block.content?.html
@@ -65,10 +60,7 @@ export function blockLoader(config: {
       const { id: blockId } = filter;
 
       try {
-        const data = await fetchArenaJson<ArenaBlock>(
-          `https://api.are.na/v3/blocks/${blockId}`,
-          { apiKey: config?.apiKey },
-        );
+        const data = await arena.getBlock(Number(blockId));
         const html = data.description?.html;
         return {
           id: data.id.toString(),
