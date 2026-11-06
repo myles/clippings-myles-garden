@@ -10,50 +10,102 @@ env:
   CLIPPINGS_ARENA_API_KEY: "i-am-an-arena-api-key"
   CLIPPINGS_ARENA_MAIN_CHANNEL_ID: "i-am-an-arena-channel-id"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  ci:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - id: checkout
         name: 📥 Checkout code
-        uses: actions/checkout@v4
-        with:
-          lfs: true
+        uses: actions/checkout@v7
 
       - id: setup-node
         name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version-file: ".nvmrc"
           cache: "npm"
-
-      - id: cache-dependencies
-        name: 📂 Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
 
       - id: install-dependencies
         name: 📦 Install dependencies
         run: npm ci
 
-      - id: cache-git-lfs
-        name: 📂 Cache Git LFS files
-        uses: actions/cache@v4
-        with:
-          path: .git/lfs/objects
-          key: ${{ runner.os }}-git-lfs-${{ hashFiles('**/.gitattributes') }}
-          restore-keys: |
-            ${{ runner.os }}-git-lfs-
+      - id: test
+        name: 🧪 Run tests
+        run: npm run test -- --coverage
 
-      - id: prettier-check
-        name: 💅 Run Prettier check
-        run: npm run prettier
+      - id: test-upload-coverage
+        name: 📊 Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage
+
+      - id: test-upload-results
+        name: 📊 Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: test-report.junit.xml
+
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: checkout
+        name: 📥 Checkout code
+        uses: actions/checkout@v7
+        with:
+          lfs: true
+
+      - id: setup-node
+        name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - id: install-dependencies
+        name: 📦 Install dependencies
+        run: npm ci
 
       - id: astro-check
         name: ♍️ Run Astro check
         run: npm run check
+
+  lint:
+    runs-on: ubuntu-latest
+
+    outputs:
+      format-outcome: ${{ steps.format-check.outcome }}
+      lint-outcome: ${{ steps.lint-check.outcome }}
+
+    steps:
+      - id: checkout
+        name: 📥 Checkout code
+        uses: actions/checkout@v7
+
+      - id: setup-node
+        name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - id: install-dependencies
+        name: 📦 Install dependencies
+        run: npm ci
+
+      - id: format-check
+        name: 💅 Run format check
+        run: npm run format
+
+      - id: lint-check
+        name: 🚨 Run lint check
+        run: npm run lint
