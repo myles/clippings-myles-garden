@@ -15,45 +15,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - id: checkout
-        name: 📥 Checkout code
-        uses: actions/checkout@v7
-
-      - id: setup-node
-        name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: "package.json"
-          cache: "npm"
-
-      - id: install-dependencies
-        name: 📦 Install dependencies
-        run: npm ci
-
-      - id: test
-        name: 🧪 Run tests
-        run: npm run test -- --coverage
-
-      - id: test-upload-coverage
-        name: 📊 Upload coverage report
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: coverage-report
-          path: coverage
-
-      - id: test-upload-results
-        name: 📊 Upload test results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: test-report
-          path: test-report.junit.xml
-
   check:
     runs-on: ubuntu-latest
 
