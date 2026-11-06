@@ -6,10 +6,8 @@ type Props = {
 const { feedName, class: className } = Astro.props;
 ---
 
-{
-  /* The h-feed root wraps rather than sits on the <ul>, because the feed's
-    `p-name` has to live inside the root and <ul> only accepts <li> children. */
-}
+{/* The h-feed root wraps rather than sits on the <ul>, because the feed's
+    `p-name` has to live inside the root and <ul> only accepts <li> children. */}
 <div class:list={["h-feed"]}>
   {feedName && <h2 class:list={["p-name", "sr-only"]}>{feedName}</h2>}
   <ul

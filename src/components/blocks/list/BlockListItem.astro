@@ -59,9 +59,11 @@ switch (true) {
 
 <li class:list={["h-entry", "block-list-item", className]}>
   <a
-    href={useExternalLink
-      ? urls.external.block(block.id)
-      : urls.block.detail(block.id)}
+    href={
+      useExternalLink
+        ? urls.external.block(block.id)
+        : urls.block.detail(block.id)
+    }
     target={useExternalLink ? "_blank" : undefined}
     rel={useExternalLink ? "noopener noreferrer" : undefined}
     class:list={[
@@ -70,15 +72,14 @@ switch (true) {
       "hover:bg-slate-100",
     ]}
   >
-    {
-      !rendersTitle && block.data.title && (
-        <span class:list={["p-name", "sr-only"]}>{block.data.title}</span>
-      )
-    }
+    {!rendersTitle && block.data.title && (
+      <span class:list={["p-name", "sr-only"]}>{block.data.title}</span>
+    )}
     {Component && <Component block={block as any} />}
   </a>
   <time
     class:list={["dt-published"]}
     datetime={formatISO(block.data.created_at)}
-    hidden></time>
+    hidden
+  ></time>
 </li>

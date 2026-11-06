@@ -18,10 +18,8 @@ if (!channelBlocks) throw channelBlocksError;
 
 <div class:list={["block-detail-channel", "size-full", className]}>
   <BlockList feedName={block.data.title}>
-    {
-      channelBlocks
-        .slice(0, 12)
-        .map((block) => <BlockListItem block={block} useExternalLink />)
-    }
+    {channelBlocks.slice(0, 12).map((block) => (
+      <BlockListItem block={block} useExternalLink />
+    ))}
   </BlockList>
 </div>

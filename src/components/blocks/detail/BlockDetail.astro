@@ -86,22 +86,20 @@ switch (true) {
       >
         {blockTitle ?? "No title"}
       </h2>
-      {
-        block.data.description ? (
-          <div
-            class:list={["p-summary", "text-lg overflow-y-scroll"]}
-            set:html={block.data.description.html}
-          />
-        ) : (
-          <p
-            class:list={[
-              "text-lg text-slate-300 selection:text-slate-50 selection:bg-slate-950",
-            ]}
-          >
-            No description
-          </p>
-        )
-      }
+      {block.data.description ? (
+        <div
+          class:list={["p-summary", "text-lg overflow-y-scroll"]}
+          set:html={block.data.description.html}
+        />
+      ) : (
+        <p
+          class:list={[
+            "text-lg text-slate-300 selection:text-slate-50 selection:bg-slate-950",
+          ]}
+        >
+          No description
+        </p>
+      )}
     </header>
     <section>
       <BlockDetailMetaDataList>
@@ -113,42 +111,41 @@ switch (true) {
             {formatDate(block.data.created_at, "EEE do MMM yyyy")}
           </time>
         </BlockDetailMetaDataListItem>
-        {
-          "user" in block.data && block.data.user && (
-            <BlockDetailMetaDataListItem name="By">
-              <a
-                class:list={["p-author", "h-card"]}
-                href={urls.external.user(block.data.user.slug)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {block.data.user.name}
-              </a>
-            </BlockDetailMetaDataListItem>
-          )
-        }
-        {
-          "source" in block.data && block.data.source && (
-            <BlockDetailMetaDataListItem name="Source">
-              <a
-                class:list={["u-bookmark-of"]}
-                href={block.data.source.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {block.data.source.title}
-              </a>
-            </BlockDetailMetaDataListItem>
-          )
-        }
+        {"user" in block.data && block.data.user && (
+          <BlockDetailMetaDataListItem name="By">
+            <a
+              class:list={["p-author", "h-card"]}
+              href={urls.external.user(block.data.user.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {block.data.user.name}
+            </a>
+          </BlockDetailMetaDataListItem>
+        )}
+        {"source" in block.data && block.data.source && (
+          <BlockDetailMetaDataListItem name="Source">
+            <a
+              class:list={["u-bookmark-of"]}
+              href={block.data.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {block.data.source.title}
+            </a>
+          </BlockDetailMetaDataListItem>
+        )}
         {ComponentMetaData && <ComponentMetaData block={block as any} />}
         <BlockDetailMetaDataListItem name="External URL">
-          View in <a
+          View in{" "}
+          <a
             class:list={["u-syndication"]}
             href={urls.external.block(block.id)}
             target="_blank"
-            rel="noopener noreferrer">Are.na</a
+            rel="noopener noreferrer"
           >
+            Are.na
+          </a>
         </BlockDetailMetaDataListItem>
       </BlockDetailMetaDataList>
     </section>

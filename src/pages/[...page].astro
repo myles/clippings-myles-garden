@@ -42,7 +42,9 @@ const jsonLd = [
   pageNavigation={page.url}
 >
   <BlockList feedName={channel.data.title}>
-    {page.data.map((block) => <BlockListItem block={block} />)}
+    {page.data.map((block) => (
+      <BlockListItem block={block} />
+    ))}
   </BlockList>
   <Pagination page={page} />
 </Layout>

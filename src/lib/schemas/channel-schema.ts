@@ -1,5 +1,6 @@
 import { z } from "astro/zod";
 import { parseISO } from "date-fns";
+
 import { markdownContentSchema } from "./base-schema";
 
 export const channelSchema = z.object({

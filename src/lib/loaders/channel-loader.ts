@@ -1,5 +1,6 @@
 import type { Channel } from "@aredotna/sdk";
 import type { LiveLoader } from "astro/loaders";
+
 import { createArenaClient } from "./arena-client";
 
 type EntryFilter = {

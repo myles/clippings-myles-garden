@@ -1,11 +1,14 @@
+import type { APIContext } from "astro";
+import type { LiveCollectionError } from "astro/content/runtime";
+
+import rss from "@astrojs/rss";
+import { getLiveCollection, getLiveEntry } from "astro:content";
+
+import type { Block, Channel } from "@/lib/schemas";
+
 import config from "@/config";
 import { sortBlocksByCreatedAt } from "@/lib/content";
 import { formatBlockToFeedXMLItem, formatChannelToFeedXML } from "@/lib/feed";
-import type { Block, Channel } from "@/lib/schemas";
-import rss from "@astrojs/rss";
-import type { APIContext } from "astro";
-import type { LiveCollectionError } from "astro/content/runtime";
-import { getLiveCollection, getLiveEntry } from "astro:content";
 
 type APIParams = { channelId: string };
 type APIProps = {
@@ -29,8 +32,8 @@ export async function GET(
     ...(await formatChannelToFeedXML(channel, context)),
     items: await Promise.all(
       blocks
+        .toSorted(sortBlocksByCreatedAt)
         .slice(0, config.PAGE_SIZE)
-        .sort(sortBlocksByCreatedAt)
         .map(async (block) => formatBlockToFeedXMLItem(block, context)),
     ),
   });
@@ -45,7 +48,9 @@ export async function getStaticPaths() {
       );
       const { entries: blocks, error: blocksError } = await getLiveCollection(
         "blocks",
-        { channelId: channelId },
+        {
+          channelId: channelId,
+        },
       );
 
       return {

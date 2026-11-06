@@ -12,22 +12,26 @@ const { class: className } = Astro.props;
       "[&_a]:underline [&_a]:decoration-2 [&_a]:decoration-red-500 [&_a]:hover:text-red-600",
     ]}
   >
-    made with <span class:list={["heart"]}>&#9829;</span> by <span
-      class:list={["h-card"]}
-      ><a
+    made with <span class:list={["heart"]}>&#9829;</span> by{" "}
+    <span class:list={["h-card"]}>
+      <a
         class:list={["p-name", "u-url", "u-uid"]}
         href="https://myles.garden"
         target="_blank"
-        rel="noopener noreferrer">myles</a
-      ></span
-    >. built on{" "}
-    <a href="https://astro.build" target="_blank" rel="noopener noreferrer"
-      >astro</a
-    >, fed by <a
-      href="https://www.are.na"
-      target="_blank"
-      rel="noopener noreferrer">are.na</a
-    >.
+        rel="noopener noreferrer"
+      >
+        myles
+      </a>
+    </span>
+    . built on{" "}
+    <a href="https://astro.build" target="_blank" rel="noopener noreferrer">
+      astro
+    </a>
+    , fed by{" "}
+    <a href="https://www.are.na" target="_blank" rel="noopener noreferrer">
+      are.na
+    </a>
+    .
   </p>
   <a
     href="https://registry.myles.garden/MB-61"
@@ -36,6 +40,8 @@ const { class: className } = Astro.props;
       "hover:bg-black hover:text-white hover:border-black",
     ]}
     target="_blank"
-    rel="noopener noreferrer">MB 61</a
+    rel="noopener noreferrer"
   >
+    MB 61
+  </a>
 </footer>

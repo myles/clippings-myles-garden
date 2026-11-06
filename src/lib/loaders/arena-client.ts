@@ -1,4 +1,5 @@
 import { createArena, type Block, type Channel } from "@aredotna/sdk";
+
 import type { ArenaClient, ArenaClientOptions } from "./arena-client.types";
 
 const DEFAULT_MAX_RETRIES = 4;

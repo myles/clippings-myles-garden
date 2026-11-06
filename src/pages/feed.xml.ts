@@ -1,9 +1,11 @@
+import type { APIContext } from "astro";
+
+import rss from "@astrojs/rss";
+import { getLiveCollection, getLiveEntry } from "astro:content";
+
 import config from "@/config";
 import { sortBlocksByCreatedAt } from "@/lib/content";
 import { formatBlockToFeedXMLItem, formatChannelToFeedXML } from "@/lib/feed";
-import rss from "@astrojs/rss";
-import type { APIContext } from "astro";
-import { getLiveCollection, getLiveEntry } from "astro:content";
 
 export async function GET(context: APIContext) {
   const { site } = context;
@@ -17,7 +19,9 @@ export async function GET(context: APIContext) {
 
   const { entries: blocks, error: blocksError } = await getLiveCollection(
     "blocks",
-    { channelId: config.ARENA_MAIN_CHANNEL_ID },
+    {
+      channelId: config.ARENA_MAIN_CHANNEL_ID,
+    },
   );
   if (!blocks) throw blocksError;
 
@@ -25,8 +29,8 @@ export async function GET(context: APIContext) {
     ...(await formatChannelToFeedXML(channel, context)),
     items: await Promise.all(
       blocks
+        .toSorted(sortBlocksByCreatedAt)
         .slice(0, config.PAGE_SIZE)
-        .sort(sortBlocksByCreatedAt)
         .map(async (block) => formatBlockToFeedXMLItem(block, context)),
     ),
   });

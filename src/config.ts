@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "dotenv/config"; // oxlint-disable-line import/no-unassigned-import
 
 type Config = {
   SITE_URL: string;

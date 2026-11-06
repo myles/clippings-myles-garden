@@ -1,4 +1,5 @@
 import type { ImageObject, QuantitativeValue } from "schema-dts";
+
 import type { ImageSchema } from "../schemas";
 
 /** UN/CEFACT code for pixels, the unit Are.na reports dimensions in. */

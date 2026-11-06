@@ -1,4 +1,3 @@
-import { formatISO } from "date-fns";
 import type {
   Article,
   Collection,
@@ -7,6 +6,11 @@ import type {
   VideoObject,
   WebPage,
 } from "schema-dts";
+
+import { formatISO } from "date-fns";
+
+import type { Block } from "../schemas";
+
 import {
   isAttachmentBlock,
   isChannelBlock,
@@ -15,7 +19,6 @@ import {
   isLinkBlock,
   isTextBlock,
 } from "../content";
-import type { Block } from "../schemas";
 import urls from "../urls";
 import { NODE_FRAGMENT, SITE_LANGUAGE } from "./constants";
 import { formatImageToJsonLd, formatPixelsToJsonLd } from "./image-ld";
@@ -26,7 +29,12 @@ import { absoluteUrl, nodeId, websiteId } from "./utils";
 const OEMBED_VIDEO_TYPE = "video";
 
 export type BlockEntity =
-  Article | Collection | ImageObject | MediaObject | VideoObject | WebPage;
+  | Article
+  | Collection
+  | ImageObject
+  | MediaObject
+  | VideoObject
+  | WebPage;
 
 const formatSharedFields = (block: Block, site?: URL) => {
   const url = absoluteUrl(urls.block.detail(block.id), site);

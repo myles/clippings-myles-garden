@@ -1,11 +1,15 @@
-import BlockFeedContent from "@/components/blocks/feed/BlockFeedContent.astro";
 import type { RSSFeedItem, RSSOptions } from "@astrojs/rss";
 import type { APIContext } from "astro";
 import type { JsonFeedItem, JsonFeedOptions } from "astro-jsonfeed/types";
+
 import { experimental_AstroContainer } from "astro/container";
 import sanitizeHtml from "sanitize-html";
+
+import BlockFeedContent from "@/components/blocks/feed/BlockFeedContent.astro";
+
 import type { Block } from "./schemas/block-schema.types";
 import type { Channel } from "./schemas/channel-schema.types";
+
 import urls from "./urls";
 
 const isAbsoluteURL = (url: string): boolean => {

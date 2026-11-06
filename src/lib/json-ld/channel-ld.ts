@@ -1,7 +1,10 @@
 import type { Page } from "astro";
-import { formatISO } from "date-fns";
 import type { CollectionPage, ItemList } from "schema-dts";
+
+import { formatISO } from "date-fns";
+
 import type { Block, Channel } from "../schemas";
+
 import urls from "../urls";
 import { NODE_FRAGMENT, SITE_LANGUAGE } from "./constants";
 import { absoluteUrl, nodeId, websiteId } from "./utils";

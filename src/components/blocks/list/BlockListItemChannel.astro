@@ -14,12 +14,10 @@ const { block, class: className } = Astro.props;
   <h3 class:list={["p-name", "font-bold text-3xl line-clamp-1"]}>
     {block.data.title}
   </h3>
-  {
-    block.data.description && (
-      <div
-        class:list={["p-summary", "text-xl font-medium"]}
-        set:html={block.data.description.html}
-      />
-    )
-  }
+  {block.data.description && (
+    <div
+      class:list={["p-summary", "text-xl font-medium"]}
+      set:html={block.data.description.html}
+    />
+  )}
 </div>

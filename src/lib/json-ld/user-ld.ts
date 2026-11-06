@@ -1,5 +1,7 @@
 import type { Organization, Person } from "schema-dts";
+
 import type { User } from "../schemas";
+
 import urls from "../urls";
 
 const GROUP_USER_TYPE = "Group";

@@ -3,6 +3,7 @@ import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
+
 import config from "./src/config";
 
 const ARENA_IMAGE_HOST = "d2w9rnfcy7mm78.cloudfront.net";

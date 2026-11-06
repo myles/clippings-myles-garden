@@ -1,5 +1,6 @@
 import type { LiveDataEntry } from "astro";
 import type { z } from "astro/zod";
+
 import { blockSchema, imageSchema } from "./block-schema";
 
 type BlockData = z.infer<typeof blockSchema>;

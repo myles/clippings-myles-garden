@@ -67,21 +67,17 @@ const jsonLd: Graph | null =
   <meta name="generator" content={Astro.generator} />
 
   <title>{title && `${title} | `}{siteTitle}</title>
-  {
-    (description || siteDescription) && (
-      <meta name="description" content={description || siteDescription} />
-    )
-  }
+  {(description || siteDescription) && (
+    <meta name="description" content={description || siteDescription} />
+  )}
 
   <link rel="canonical" href={canonicalUrl} />
   <link rel="sitemap" href={new URL("/sitemap-index.xml", Astro.site).href} />
 
   {/* Feeds */}
-  {
-    feedLinks.map(({ title, type, url }) => (
-      <link rel="alternate" title={title} type={type} href={url.toString()} />
-    ))
-  }
+  {feedLinks.map(({ title, type, url }) => (
+    <link rel="alternate" title={title} type={type} href={url.toString()} />
+  ))}
 
   {/* IndieAuth Tags */}
   <link rel="authorization_endpoint" href="https://indieauth.com/auth" />
@@ -126,36 +122,28 @@ const jsonLd: Graph | null =
   <meta name="twitter:description" content={siteDescription} />
 
   {/* Page Navigation */}
-  {
-    pageNavigation && pageNavigation.next && (
-      <link rel="next" href={new URL(pageNavigation.next, canonicalUrl)} />
-    )
-  }
-  {
-    pageNavigation && pageNavigation.prev && (
-      <link rel="prev" href={new URL(pageNavigation.prev, canonicalUrl)} />
-    )
-  }
+  {pageNavigation && pageNavigation.next && (
+    <link rel="next" href={new URL(pageNavigation.next, canonicalUrl)} />
+  )}
+  {pageNavigation && pageNavigation.prev && (
+    <link rel="prev" href={new URL(pageNavigation.prev, canonicalUrl)} />
+  )}
 
   {/* JSON-LD Structured Data */}
-  {
-    jsonLd && (
-      <script
-        is:inline
-        type="application/ld+json"
-        set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
-      />
-    )
-  }
+  {jsonLd && (
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")}
+    />
+  )}
 
   {/* Tinylytics Track Code */}
-  {
-    config.SITE_TINYLYTICS_ID && (
-      <script
-        src={`https://tinylytics.app/embed/${config.SITE_TINYLYTICS_ID}.js`}
-        defer
-        is:inline
-      />
-    )
-  }
+  {config.SITE_TINYLYTICS_ID && (
+    <script
+      src={`https://tinylytics.app/embed/${config.SITE_TINYLYTICS_ID}.js`}
+      defer
+      is:inline
+    />
+  )}
 </head>

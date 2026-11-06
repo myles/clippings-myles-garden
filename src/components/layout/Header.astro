@@ -32,20 +32,20 @@ const {
         class:list={[
           "font-bold text-4xl underline decoration-red-500 decoration-2",
           "hover:text-red-500 transition duration-150",
-        ]}>{siteTitle}</a
+        ]}
       >
+        {siteTitle}
+      </a>
     </h1>
 
-    {
-      siteDescriptionHtml && (
-        <div
-          class:list={[
-            "prose-2xl prose-base:text-black prose-p:leading-tight prose-p:font-medium max-w-none! prose-a:underline",
-          ]}
-          set:html={siteDescriptionHtml}
-        />
-      )
-    }
+    {siteDescriptionHtml && (
+      <div
+        class:list={[
+          "prose-2xl prose-base:text-black prose-p:leading-tight prose-p:font-medium max-w-none! prose-a:underline",
+        ]}
+        set:html={siteDescriptionHtml}
+      />
+    )}
   </div>
   <div
     class:list={[

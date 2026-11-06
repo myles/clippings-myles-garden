@@ -9,13 +9,11 @@ const { block } = Astro.props;
 ---
 
 <Fragment>
-  {
-    block.data.image.width && block.data.image.height && (
-      <BlockDetailMetaDataListItem name="Dimensions">
-        <span class:list={["tabular-nums"]}>{block.data.image.width}</span>
-        &times;
-        <span class:list={["tabular-nums"]}>{block.data.image.height}</span>
-      </BlockDetailMetaDataListItem>
-    )
-  }
+  {block.data.image.width && block.data.image.height && (
+    <BlockDetailMetaDataListItem name="Dimensions">
+      <span class:list={["tabular-nums"]}>{block.data.image.width}</span>
+      &times;
+      <span class:list={["tabular-nums"]}>{block.data.image.height}</span>
+    </BlockDetailMetaDataListItem>
+  )}
 </Fragment>

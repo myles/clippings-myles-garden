@@ -1,5 +1,7 @@
 import type { WebSite } from "schema-dts";
+
 import type { Channel } from "../schemas";
+
 import urls from "../urls";
 import { SITE_LANGUAGE } from "./constants";
 import { absoluteUrl, websiteId } from "./utils";

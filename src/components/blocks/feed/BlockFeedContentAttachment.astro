@@ -8,7 +8,6 @@ const { block } = Astro.props;
 ---
 
 <p>
-  Click here to view the attachment: <a href={block.data.attachment.url}
-    >{block.data.attachment.filename}</a
-  >
+  Click here to view the attachment:{" "}
+  <a href={block.data.attachment.url}>{block.data.attachment.filename}</a>
 </p>
