@@ -2,6 +2,8 @@ import { createArena, type Block, type Channel } from "@aredotna/sdk";
 
 import type { ArenaClient, ArenaClientOptions } from "./arena-client.types";
 
+import { cached } from "./cache";
+
 const DEFAULT_MAX_RETRIES = 4;
 
 const requestCache = new Map<string, Promise<unknown>>();
@@ -21,17 +23,19 @@ export function createArenaClient({
 
   return {
     getChannel: (channelId) => {
-      return cached(`channel:${channelId}`, () =>
+      return cached(requestCache, `channel:${channelId}`, () =>
         arena.channels.get(channelId),
       );
     },
 
     getBlock: (blockId) => {
-      return cached(`block:${blockId}`, () => arena.blocks.get(blockId));
+      return cached(requestCache, `block:${blockId}`, () =>
+        arena.blocks.get(blockId),
+      );
     },
 
     getChannelContents: (channelId, per) => {
-      return cached(`contents:${channelId}:${per}`, async () => {
+      return cached(requestCache, `contents:${channelId}:${per}`, async () => {
         const contents: (Block | Channel)[] = [];
         const pages = arena.channels.paginateContents(channelId, { per });
 
@@ -43,18 +47,4 @@ export function createArenaClient({
       });
     },
   };
-}
-
-function cached<T>(key: string, request: () => Promise<T>): Promise<T> {
-  const hit = requestCache.get(key);
-  if (hit) {
-    return hit as Promise<T>;
-  }
-
-  const pending = request();
-  requestCache.set(key, pending);
-  // Don't cache failures: evict so a later caller starts fresh.
-  pending.catch(() => requestCache.delete(key));
-
-  return pending;
 }
