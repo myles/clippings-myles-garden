@@ -8,6 +8,12 @@ import config from "./src/config";
 
 const ARENA_IMAGE_HOST = "d2w9rnfcy7mm78.cloudfront.net";
 
+// Mirrored media is served from the Bunny pull zone; Are.na stays allowed as
+// the fallback when a file couldn't be mirrored.
+const IMAGE_HOSTS = config.BUNNY
+  ? [ARENA_IMAGE_HOST, new URL(config.BUNNY.PULL_ZONE_URL).hostname]
+  : [ARENA_IMAGE_HOST];
+
 /**
  * Widths that Vercel's Image Optimization API is allowed to produce. Any
  * `widths` passed to `<Image>` must appear here — the adapter silently drops
@@ -19,7 +25,7 @@ const IMAGE_SIZES = [384, 640, 768, 1080, 1536, 1920];
 export default defineConfig({
   site: config.SITE_URL,
   image: {
-    domains: [ARENA_IMAGE_HOST],
+    domains: IMAGE_HOSTS,
   },
   redirects: {
     "/block": "/",

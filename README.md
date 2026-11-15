@@ -50,14 +50,20 @@ CLIPPINGS_ARENA_API_KEY="i-am-an-arena-api-key"
 CLIPPINGS_ARENA_MAIN_CHANNEL_ID="clippings"
 ```
 
-| Variable                            | Required | Default                          | What it's for                                                              |
-| ----------------------------------- | -------- | -------------------------------- | -------------------------------------------------------------------------- |
-| `CLIPPINGS_ARENA_API_KEY`           | yes      | —                                | Are.na personal access token, sent with every API request                  |
-| `CLIPPINGS_ARENA_MAIN_CHANNEL_ID`   | yes      | —                                | The channel that becomes the front page                                    |
-| `CLIPPINGS_ARENA_OTHER_CHANNEL_IDS` | no       | none                             | Comma-separated list of extra channels to publish at `/channel/<id>`       |
-| `CLIPPINGS_SITE_URL`                | no       | `https://clippings.myles.garden` | Canonical site URL, used for feeds, the sitemap and metadata               |
-| `CLIPPINGS_PAGE_SIZE`               | no       | `12`                             | Blocks per page, in both the listings and the feeds                        |
-| `CLIPPINGS_SITE_TINYLYTICS_ID`      | no       | none                             | [Tinylytics](https://tinylytics.app) site ID; analytics are off without it |
+| Variable                             | Required | Default                          | What it's for                                                                |
+| ------------------------------------ | -------- | -------------------------------- | ---------------------------------------------------------------------------- |
+| `CLIPPINGS_ARENA_API_KEY`            | yes      | —                                | Are.na personal access token, sent with every API request                    |
+| `CLIPPINGS_ARENA_MAIN_CHANNEL_ID`    | yes      | —                                | The channel that becomes the front page                                      |
+| `CLIPPINGS_ARENA_OTHER_CHANNEL_IDS`  | no       | none                             | Comma-separated list of extra channels to publish at `/channel/<id>`         |
+| `CLIPPINGS_SITE_URL`                 | no       | `https://clippings.myles.garden` | Canonical site URL, used for feeds, the sitemap and metadata                 |
+| `CLIPPINGS_PAGE_SIZE`                | no       | `12`                             | Blocks per page, in both the listings and the feeds                          |
+| `CLIPPINGS_SITE_TINYLYTICS_ID`       | no       | none                             | [Tinylytics](https://tinylytics.app) site ID; analytics are off without it   |
+| `CLIPPINGS_BUNNY_STORAGE_ZONE`       | no       | none                             | Bunny Storage Zone that Are.na images and attachments are mirrored into      |
+| `CLIPPINGS_BUNNY_STORAGE_ACCESS_KEY` | no       | none                             | The Storage Zone's password (secret)                                         |
+| `CLIPPINGS_BUNNY_STORAGE_REGION`     | no       | `de`                             | Storage Zone region: `de`, `uk`, `ny`, `la`, `sg`, `se`, `br`, `jh` or `syd` |
+| `CLIPPINGS_BUNNY_PULL_ZONE_URL`      | no       | none                             | Pull Zone URL serving the Storage Zone, e.g. `https://clippings.b-cdn.net`   |
+
+Media mirroring is optional. Set the zone, access key and pull zone URL together (or none of them). When set, each build uploads any Are.na image or attachment not already in the Storage Zone and serves it from the Pull Zone; files that fail to mirror fall back to Are.na's URL.
 
 Channel IDs are the slug in the URL of your Are.na channel (e.g. `are.na/myles/clippings` → `clippings`). You can generate an access token at <https://www.are.na/developers/personal-access-tokens>.
 

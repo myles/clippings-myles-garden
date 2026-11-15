@@ -1,7 +1,10 @@
 import type { Block, Channel } from "@aredotna/sdk";
 import type { LiveLoader } from "astro/loaders";
 
+import type { MediaMirrorOptions } from "./media-mirror.types";
+
 import { createArenaClient } from "./arena-client";
+import { createMediaMirror } from "./media-mirror";
 
 // Are.na channel contents mix blocks with nested channels.
 type Connectable = Block | Channel;
@@ -19,8 +22,10 @@ type CollectionFilter = {
 
 export function blockLoader(config: {
   apiKey?: string;
+  media?: MediaMirrorOptions;
 }): LiveLoader<Connectable, EntryFilter, CollectionFilter> {
   const arena = createArenaClient({ apiKey: config?.apiKey });
+  const media = createMediaMirror(config?.media);
 
   return {
     name: "arena-block-loader",
@@ -34,7 +39,10 @@ export function blockLoader(config: {
       }
 
       try {
-        const results = await arena.getChannelContents(channelId, per);
+        const contents = await arena.getChannelContents(channelId, per);
+        const results = await Promise.all(
+          contents.map((block) => media.mirrorBlock(block)),
+        );
 
         return {
           entries: results.map((block: Connectable) => {
@@ -61,7 +69,9 @@ export function blockLoader(config: {
       const { id: blockId } = filter;
 
       try {
-        const data = await arena.getBlock(Number(blockId));
+        const data = await media.mirrorBlock(
+          await arena.getBlock(Number(blockId)),
+        );
         const html = data.description?.html;
         return {
           id: data.id.toString(),
