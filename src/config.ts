@@ -6,6 +6,7 @@ type Config = {
   ARENA_MAIN_CHANNEL_ID: string;
   ARENA_OTHER_CHANNEL_IDS: string[];
   SITE_TINYLYTICS_ID?: string;
+  SITE_NEAT_STATS_ID?: string;
   PAGE_SIZE: number;
 };
 
@@ -16,6 +17,7 @@ const loadConfig = (): Config => {
     CLIPPINGS_ARENA_MAIN_CHANNEL_ID,
     CLIPPINGS_ARENA_OTHER_CHANNEL_IDS,
     CLIPPINGS_SITE_TINYLYTICS_ID,
+    CLIPPINGS_SITE_NEAT_STATS_ID,
     CLIPPINGS_PAGE_SIZE,
   } = process.env;
 
@@ -36,6 +38,7 @@ const loadConfig = (): Config => {
       ? CLIPPINGS_ARENA_OTHER_CHANNEL_IDS.split(",")
       : [],
     SITE_TINYLYTICS_ID: CLIPPINGS_SITE_TINYLYTICS_ID,
+    SITE_NEAT_STATS_ID: CLIPPINGS_SITE_NEAT_STATS_ID,
     PAGE_SIZE: CLIPPINGS_PAGE_SIZE ? parseInt(CLIPPINGS_PAGE_SIZE) : 12,
   };
 };

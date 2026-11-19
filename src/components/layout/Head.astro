@@ -146,4 +146,11 @@ const jsonLd: Graph | null =
       is:inline
     />
   )}
+
+  {config.SITE_NEAT_STATS_ID && (
+    <Fragment>
+      <meta name="neatstats_verification" content={config.SITE_NEAT_STATS_ID} />
+      <script src="https://neatstats.net/view.js"></script>
+    </Fragment>
+  )}
 </head>
