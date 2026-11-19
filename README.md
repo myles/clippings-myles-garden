@@ -58,7 +58,7 @@ CLIPPINGS_ARENA_MAIN_CHANNEL_ID="clippings"
 | `CLIPPINGS_SITE_URL`                | no       | `https://clippings.myles.garden` | Canonical site URL, used for feeds, the sitemap and metadata               |
 | `CLIPPINGS_PAGE_SIZE`               | no       | `12`                             | Blocks per page, in both the listings and the feeds                        |
 | `CLIPPINGS_SITE_TINYLYTICS_ID`      | no       | none                             | [Tinylytics](https://tinylytics.app) site ID; analytics are off without it |
-| `CLIPPINGS_SITE_TINYLYTICS_ID`      | no       | none                             | [NeatStats](https://neatstats.net) site ID; analytics are off without it   |
+| `CLIPPINGS_SITE_NEAT_STATS_ID`      | no       | none                             | [NeatStats](https://neatstats.net) site ID; analytics are off without it   |
 
 Channel IDs are the slug in the URL of your Are.na channel (e.g. `are.na/myles/clippings` → `clippings`). You can generate an access token at <https://www.are.na/developers/personal-access-tokens>.
 
