@@ -90,7 +90,8 @@ const baseBlockSchema = z.object({
 const attachmentBlockSchema = baseBlockSchema.extend({
   type: z.literal("Attachment"),
   attachment: attachmentSchema,
-  image: imageSchema,
+  // Are.na leaves this null until it renders a thumbnail, e.g. for videos.
+  image: imageSchema.nullable(),
 });
 
 const embedBlockSchema = baseBlockSchema.extend({

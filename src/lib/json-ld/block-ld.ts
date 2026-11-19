@@ -119,13 +119,13 @@ export const formatBlockToEntity = (block: Block, site?: URL): BlockEntity => {
   }
 
   if (isAttachmentBlock(block)) {
-    const { attachment } = block.data;
+    const { attachment, image } = block.data;
 
     return {
       ...sharedFields,
       "@type": "MediaObject",
       name: sharedFields.name ?? attachment.filename ?? undefined,
-      image: formatImageToJsonLd(block.data.image, imageId),
+      image: image ? formatImageToJsonLd(image, imageId) : undefined,
       contentUrl: attachment.url,
       encodingFormat: attachment.content_type ?? undefined,
       contentSize: attachment.file_size?.toString(),

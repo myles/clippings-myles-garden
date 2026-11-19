@@ -9,7 +9,19 @@ type Props = {
 const { block, class: className } = Astro.props;
 ---
 
-<BlockImageSmall
-  image={block.data.image}
-  class:list={["block-list-item-attachment", "p-2", className]}
-/>
+{block.data.image ? (
+  <BlockImageSmall
+    image={block.data.image}
+    class:list={["block-list-item-attachment", "p-2", className]}
+  />
+) : (
+  <span
+    class:list={[
+      "block-list-item-attachment",
+      "p-2 text-sm text-slate-500 break-all",
+      className,
+    ]}
+  >
+    {block.data.attachment.filename}
+  </span>
+)}
